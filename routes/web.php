@@ -23,4 +23,5 @@ Route::group(['middleware' => 'auth'], function () {
      * */
     Route::get('/{Model}', 'RouteController@index');
     Route::get('/{Model}/{id}', 'RouteController@show');
+    Route::post('/{Model}/{id}/save', 'CrudController@save');
 });

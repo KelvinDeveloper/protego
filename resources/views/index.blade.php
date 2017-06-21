@@ -13,6 +13,8 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
 		<link type="text/css" href="/css/themes/theme-cake.css" rel="stylesheet">
+
+        <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
 	</head>
 	<body>
 
@@ -37,7 +39,6 @@
 			</div>
         </div>
 
-        <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
         <script src="/lib/jquery.nanoscroller/javascripts/jquery.nanoscroller.min.js" type="text/javascript"></script>
         <script src="/js/main.js" type="text/javascript"></script>
         <script src="/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

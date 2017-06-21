@@ -8,7 +8,7 @@
                 <div class="widget-head">{!! view('grid.buttons', compact('Model'))->render() !!}</div>
                 <table class="table table-striped table-fw-widget table-hover">
                     {!! view('grid.header', compact('Table'))->render() !!}
-                    {!! view('grid.body', compact('Table', 'Values'))->render() !!}
+                    {!! view('grid.body', compact('Model', 'Table', 'Values'))->render() !!}
                     {!! view('grid.footer')->render() !!}
                 </table>
                 {!! view('grid.pagination')->render() !!}

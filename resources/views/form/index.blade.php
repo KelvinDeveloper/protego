@@ -7,7 +7,8 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="widget-head">{!! view('form.buttons', compact('Model'))->render() !!}</div>
-                    <form class="form-horizontal group-border-dashed">
+                    <form action="/{{ str_singular($Model->getTable()) }}/{{ $Value->id ?: 'new' }}/save" class="form-horizontal group-border-dashed" id="form-{{ $Model->getTable() }}" method="POST">
+                        {{ csrf_field() }}
                         {!! $Form !!}
                     </form>
                 </div>

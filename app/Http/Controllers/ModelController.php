@@ -9,6 +9,53 @@ use Illuminate\Support\Facades\Session;
 class ModelController extends Controller
 {
     /**
+     * Get model
+     *
+     * @return object
+     */
+    public function getModel ($Model, $setDefault = false)
+    {
+        $Model = ucfirst( strtolower( str_singular( $Model ) ) );
+
+        if (! file_exists( app_path() . "/{$Model}.php" ) ) {
+
+            abort(404);
+        }
+
+        $Class = "\\App\\{$Model}";
+        $Class = new $Class;
+
+        if ($setDefault) {
+
+            $Class = $this->setDefault($Class);
+        }
+
+        return $Class;
+    }
+
+    /**
+     * Set default configurations
+     *
+     * @return object
+     * */
+    private function setDefault($Class)
+    {
+        $Default = [
+            'title' =>  ucfirst( strtolower( str_plural( $Class->getTable() ) ) )
+        ];
+
+        foreach ($Default as $key => $value) {
+
+            if (! isset( $Class->{$key} ) ) {
+
+                $Class->{$key} = $value;
+            }
+        }
+
+        return $Class;
+    }
+
+    /**
      * Get info table in database
      *
      * @return object
@@ -26,6 +73,7 @@ class ModelController extends Controller
 
             $Columns[ $Name ] = (object) [
                 'name'      =>  ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
+                'key'       =>  $Name,
                 'type'		=>	$Column->getType()->getName(),
                 'length'	=>	$Column->getLength(),
                 'scale'		=>	$Column->getScale(),
@@ -53,7 +101,15 @@ class ModelController extends Controller
      * */
     public function getValue($Model, $id)
     {
-        return $Model->where('work_group_id', Session::get('work_group')->id)->where('id', $id)->first();
+        $Value = [];
+
+        if (! $Value = $Model->where('work_group_id', Session::get('work_group')->id)->where('id', $id)->first() ) {
+
+            $Value = (object)[
+              'id'  =>  false
+            ];
+        }
+        return  $Value;
     }
 
     /**
@@ -67,7 +123,7 @@ class ModelController extends Controller
 
         foreach ($Table as $Name => $Field) {
 
-            $Field->value = $Value->{$Name} ?: '';
+            $Field->value = isset( $Value->{$Name} ) ? $Value->{$Name} : '';
 
             switch ($Field->type) {
 
