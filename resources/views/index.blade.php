@@ -11,26 +11,36 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
-		<link type="text/css" href="/css/themes/theme-cake.css" rel="stylesheet">
-
         <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="/lib/jquery.moneymask/jquery.moneymask-min.js" type="text/javascript"></script>
+        <script src="/lib/jquery.uploadifive/jquery.uploadifive.min.js" type="text/javascript"></script>
+
+		<link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
+        <link type="text/css" href="/css/style.css" rel="stylesheet">
+        <link type="text/css" href="/css/custom.css" rel="stylesheet">
+        <link type="text/css" href="/css/themes/theme-cake.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/lib/sweetalert/dist/sweetalert.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 
         <div class="am-wrapper">
             @include('menu.top')
 
-            @include('menu.left', ['Items' => [
+            @include('menu.left', ['Menu' => [
                     0	=>	[
-                        'name'	=>	'Home',
-                        'href'	=>	'/',
-                        'icon'	=>	'home'
-                    ],
-                    1	=>	[
                         'name'	=>	'Produtos',
-                        'href'	=>	'/products',
-                        'icon'	=>	'list'
+                        'icon'  =>  'layers',
+                        'items' =>  [
+                            0   =>  [
+                                'name'  =>  'Todos os produtos',
+                                'href'	=>	'/products'
+                            ],
+                            1   =>  [
+                                'name'  =>  'Novo produto',
+                                'href'	=>	'/product/new'
+                            ]
+                        ]
                     ]
                 ]])
 
@@ -50,6 +60,7 @@
         <script src="/lib/jquery-flot/plugins/curvedLines.js" type="text/javascript"></script>
         <script src="/lib/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="/lib/countup/countUp.min.js" type="text/javascript"></script>
+        <script src="/lib/sweetalert/dist/sweetalert.min.js"></script>
         <script type="text/javascript">
           $(document).ready(function(){
             //initialize the javascript

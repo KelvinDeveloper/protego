@@ -19,7 +19,7 @@ class CreateTableProducts extends Migration
 
             $table->string('name', 100);
             $table->text('description');
-            $table->decimal('price', 5, 2);
+            $table->decimal('price', 15, 2);
             $table->integer('work_group_id');
 
             $table->timestamps();

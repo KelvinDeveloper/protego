@@ -36,8 +36,7 @@ class RouteController extends Controller
     {
         $Model = $this->ModelController->getModel($Model, true);
         $Value = $this->ModelController->getValue($Model, $id);
-        $Table = $this->ModelController->tableDetails($Model);
-        $Form  = $this->ModelController->getForm($Table, $Value);
+        $Form  = $this->ModelController->getForm($Value, $Model);
 
         return view('form.index', compact('Model', 'Value', 'Form'))->render();
     }

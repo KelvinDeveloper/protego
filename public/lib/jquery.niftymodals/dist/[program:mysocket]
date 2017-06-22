@@ -1,0 +1,7 @@
+[program:mysocket]
+command=php artisan brainsocket:start
+directory=/var/www/vhosts/dev.tblmanager.com/
+stdout_logfile=/var/www/vhosts/dev.tblmanager.com/storage/logs/mysocket_brainsocket.log
+redirect_stderr=true
+
+supervisord -c /etc/supervisord.conf 

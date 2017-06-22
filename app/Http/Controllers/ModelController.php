@@ -52,6 +52,40 @@ class ModelController extends Controller
             }
         }
 
+        foreach ($this->tableDetails($Class) as $Field) {
+
+            if (! isset( $Class->field[ $Field->key ] ) ) {
+
+                $Class->field[ $Field->key ] = [];
+            }
+
+            $Class->field[ $Field->key ] = array_merge((array) $Field, $Class->field[ $Field->key ]);
+
+            switch ( $Class->field[ $Field->key ]['type'] ) {
+
+                case 'pics':
+
+                    /**
+                     * Default configurations Uploadfive
+                     *
+                     * http://www.uploadify.com/documentation/uploadifive/
+                     * */
+                    $Class->field[ $Field->key ] = array_merge([
+                        'auto'      =>  'true',
+                        'buttonText'=>  'Selecionar arquivos',
+                        'max'       =>  10,
+                        'path'      =>  '/' . str_singular( $Class->getTable() ) . '/',
+                        'sizeLimit' =>  10,
+                        'objName'   =>  'file',
+                        'multi'     =>  'true',
+                        'fileType'  =>  'image/*'
+                    ], $Class->field[ $Field->key ]);
+                    break;
+            }
+
+            $Class->field[ $Field->key ] = (object) $Class->field[ $Field->key ];
+        }
+
         return $Class;
     }
 
@@ -72,7 +106,7 @@ class ModelController extends Controller
             $Name = str_replace('`', '', $Name);
 
             $Columns[ $Name ] = (object) [
-                'name'      =>  ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
+                'name'      =>  isset( $Model->field[ $Name ]->label ) ? $Model->field[ $Name ]->label : ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
                 'key'       =>  $Name,
                 'type'		=>	$Column->getType()->getName(),
                 'length'	=>	$Column->getLength(),
@@ -91,7 +125,14 @@ class ModelController extends Controller
      * */
     public function getValues($Model)
     {
-        return $Model->where('work_group_id', Session::get('work_group')->id)->orderBy('id', 'DESC')->get();
+        $Values = [];
+
+        foreach ($Model->where('work_group_id', Session::get('work_group')->id)->orderBy('id', 'DESC')->get() as $Value ) {
+
+            $Values[] = $this->formatData($Value, $Model);
+        }
+
+        return $Values;
     }
 
     /**
@@ -109,6 +150,9 @@ class ModelController extends Controller
               'id'  =>  false
             ];
         }
+
+        $Value = $this->formatData($Value, $Model);
+
         return  $Value;
     }
 
@@ -117,25 +161,81 @@ class ModelController extends Controller
      *
      * @return HTML
      * */
-    public function getForm($Table, $Value)
+    public function getForm($Value, $Model)
     {
         $HTML = '';
 
-        foreach ($Table as $Name => $Field) {
+        foreach ($Model->field as $Name => $Field) {
 
             $Field->value = isset( $Value->{$Name} ) ? $Value->{$Name} : '';
 
             switch ($Field->type) {
 
                 case 'text':
-                    $HTML .= view('form.textarea', compact('Field'))->render();
+                    $HTML .= view('form.textarea', compact('Field', 'Model'))->render();
+                    break;
+                case 'decimal':
+                    $HTML .= view('form.decimal', compact('Field', 'Model'))->render();
+                    break;
+                case 'pics':
+                    $HTML .= view('form.pics', compact('Field', 'Model', 'Value'))->render();
                     break;
                 default:
-                    $HTML .= view('form.input', compact('Field'))->render();
+                    $HTML .= view('form.input', compact('Field', 'Model'))->render();
                     break;
             }
         }
 
         return $HTML;
+    }
+
+    /**
+     * Format data for update database
+     * */
+    public function formatData($Value, $Model)
+    {
+
+        foreach ($this->tableDetails($Model) as $Field) {
+
+            if (! isset( $Value->{$Field->key} ) ) continue;
+
+            switch ($Field->type) {
+
+                case 'decimal':
+
+                    $Value->{$Field->key} = $this->BRLFloatToCurrency($Value->{$Field->key}, $Field->scale);
+                    break;
+            }
+        }
+
+        return $Value;
+    }
+
+    /**
+     * Format decimal database format
+     *
+     * @return @float
+     * */
+    public function BRLCurrencyToFloat($number)
+    {
+        if ($number && !is_numeric($number)) {
+            $number = str_replace(',', '.', str_replace('.', '', $number));
+        }
+
+        return (float)$number;
+    }
+
+    /**
+     * Format decimal screen format (ex.: 1,250.00)
+     *
+     * @return string
+     * */
+    public function BRLFloatToCurrency($number, $scale = 2)
+    {
+        if (is_numeric($number)) {
+            $number = number_format($number, $scale);
+        }
+
+        return $number;
     }
 }

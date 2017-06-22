@@ -15,4 +15,5 @@
             </div>
         </div>
     </div>
+    {!! view('grid.javascript', compact('Model'))->render() !!}
 @endsection

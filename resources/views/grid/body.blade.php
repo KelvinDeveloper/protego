@@ -11,7 +11,7 @@
                     <ul role="menu" class="dropdown-menu">
                         <li><a href="/{{ str_singular($Model->getTable()) }}/{{ $Value->id }}">Editar</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Excluir</a></li>
+                        <li><a class="delete" href="#" data-id="{{ $Value->id }}">Excluir</a></li>
                     </ul>
                 </div>
             </td>

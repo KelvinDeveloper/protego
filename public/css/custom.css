@@ -1,0 +1,13 @@
+i.left {
+  float: left;
+  margin-right: 10px;
+  margin-top: -3px;
+  font-size: 22px;
+}
+
+i.right {
+  float: right;
+  margin-left: 10px;
+  margin-top: -3px;
+  font-size: 22px;
+}
