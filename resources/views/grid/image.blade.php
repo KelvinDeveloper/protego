@@ -1,1 +1,1 @@
-<img src="/storage{{ $Location }}thumb/{{ $File['filename'] }}-50x50.{{ $File['extension'] }}" />
+<img src="/img{{ $Location }}thumb/{{ $File['filename'] }}-50x50.{{ $File['extension'] }}" />

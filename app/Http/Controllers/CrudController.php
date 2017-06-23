@@ -50,9 +50,13 @@ class CrudController extends Controller
                 case 'pics':
 
                     if ( $id == 'new' ) {
-                        rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", storage_path() . "/app/public{$Field->path}{$Value->id}/");
-                        $Value->{$Field->key} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
+
+                        (new FolderController())->create(public_path('/img/') . "{$Field->path}{$Value->id}/");
+
+                        rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");
                     }
+
+                    $Value->{$Field->key} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
                     break;
             }
         }
@@ -110,8 +114,9 @@ class CrudController extends Controller
             $Field->path = storage_path() . "/tmp{$Field->path}{$request->hash}/";
         } else {
 
-            $Field->path = storage_path() . "/app/public{$Field->path}{$id}/";
+            $Field->path = public_path('/img/') . "{$Field->path}{$id}/";
         }
+        $File->move( $Field->path, $File->getClientOriginalName() );
 
         if ( is_array( $Field->resize ) ) {
 
@@ -124,7 +129,5 @@ class CrudController extends Controller
                 $Object->save("{$Field->path}thumb/{$File->getFileName()}-{$Size[0]}x$Size[1].{$File->getClientOriginalExtension()}");
             }
         }
-
-        $File->move( $Field->path, $File->getClientOriginalName() );
     }
 }

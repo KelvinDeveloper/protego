@@ -145,6 +145,7 @@ class ModelController extends Controller
      * */
     public function getValue($Model, $id)
     {
+        $Model = $this->getModel( str_singular( $Model->getTable() ), true );
         $Value = [];
 
         if (! $Value = $Model->where('work_group_id', Session::get('work_group')->id)->where('id', $id)->first() ) {
@@ -218,7 +219,7 @@ class ModelController extends Controller
                 case 'pics':
 
                     $HTML = '';
-                    $Path = storage_path('app/public') . "{$Value->{$Field->key}}";
+                    $Path = public_path('img') . "{$Field->path}{$Value->id}/";
 
                     if (! empty($Value->{$Field->key}) && $Files = scandir( $Path ) ) {
 
