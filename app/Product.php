@@ -14,10 +14,11 @@ class Product extends Model
 
     public $field = [
         'pics'  =>  [
-            'label' =>  'Fotos',
-            'type'  =>  'pics',
-            'max'   =>  10,
-            'path'  =>  '/product/'
+            'label'     =>  'Fotos',
+            'type'      =>  'pics',
+            'max'       =>  10,
+            'path'      =>  '/product/',
+            'resize'    =>  [ [50, 50], [150, 150] ]
         ],
         'name'  =>  [
             'label' =>  'Nome',

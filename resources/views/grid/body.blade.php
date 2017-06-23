@@ -2,7 +2,7 @@
     @foreach($Values as $Value)
         <tr>
         @foreach($Table as $Name => $Field)
-            <td>{{ $Value->{$Name} }}</td>
+            <td>{!! $Value->{$Name} !!}</td>
         @endforeach
             <td>
                 <div class="btn-group btn-space">

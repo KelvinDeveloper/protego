@@ -1,0 +1,1 @@
+<img src="/storage{{ $Location }}thumb/{{ $File['filename'] }}-50x50.{{ $File['extension'] }}" />

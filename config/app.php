@@ -189,6 +189,7 @@ return [
          * Providers vendor
          * */
         Collective\Html\HtmlServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -240,7 +241,6 @@ return [
         /*
         * My Facades
         */
-        'Form'   => App\Facades\Form::class,
         'Element' => App\Facades\Element::class,
         'Magic' => App\Facades\Magic::class,
 
@@ -249,6 +249,7 @@ return [
          * */
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class
     ],
 
 ];

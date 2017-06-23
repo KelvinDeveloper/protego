@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -41,7 +42,8 @@ class ModelController extends Controller
     private function setDefault($Class)
     {
         $Default = [
-            'title' =>  ucfirst( strtolower( str_plural( $Class->getTable() ) ) )
+            'title' =>  ucfirst( strtolower( str_plural( $Class->getTable() ) ) ),
+            'hash'  =>  false,
         ];
 
         foreach ($Default as $key => $value) {
@@ -78,7 +80,8 @@ class ModelController extends Controller
                         'sizeLimit' =>  10,
                         'objName'   =>  'file',
                         'multi'     =>  'true',
-                        'fileType'  =>  'image/*'
+                        'fileType'  =>  'image/*',
+                        'resize'    =>  false
                     ], $Class->field[ $Field->key ]);
                     break;
             }
@@ -165,6 +168,13 @@ class ModelController extends Controller
     {
         $HTML = '';
 
+        if (! $Value->id )
+        {
+            $Model->hash = hash('crc32b', time() );
+
+            $HTML .= Form::hidden('hash', $Model->hash);
+        }
+
         foreach ($Model->field as $Name => $Field) {
 
             $Field->value = isset( $Value->{$Name} ) ? $Value->{$Name} : '';
@@ -194,8 +204,7 @@ class ModelController extends Controller
      * */
     public function formatData($Value, $Model)
     {
-
-        foreach ($this->tableDetails($Model) as $Field) {
+        foreach ($Model->field as $Field) {
 
             if (! isset( $Value->{$Field->key} ) ) continue;
 
@@ -203,7 +212,28 @@ class ModelController extends Controller
 
                 case 'decimal':
 
-                    $Value->{$Field->key} = $this->BRLFloatToCurrency($Value->{$Field->key}, $Field->scale);
+                    $Value->{$Field->key} = number_format( $Value->{$Field->key} , $Field->scale, ',', '.');
+                    break;
+
+                case 'pics':
+
+                    $HTML = '';
+                    $Path = storage_path('app/public') . "{$Value->{$Field->key}}";
+
+                    if (! empty($Value->{$Field->key}) && $Files = scandir( $Path ) ) {
+
+                        foreach ( $Files as $File ) {
+
+                            if( @is_array( getimagesize( $Path . $File ) ) ) {
+
+                                $File     = pathinfo($File);
+                                $Location = $Value->{$Field->key};
+                                $HTML .= view('grid.image', compact('Field', 'File', 'Location'))->render();
+                            }
+                        }
+                    }
+
+                    $Value->{$Field->key} = $HTML;
                     break;
             }
         }

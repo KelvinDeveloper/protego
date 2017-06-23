@@ -8,7 +8,7 @@
 <script>
   $('[name="{{ $Field->key }}"]').uploadifive({
     auto: {{ $Field->auto }},
-    uploadScript: '/{{ str_singular($Model->getTable()) }}/{{ $Value->id }}/file/upload',
+    uploadScript: '/{{ str_singular($Model->getTable()) }}/{{ $Value->id ?: 'new' }}/file/upload',
     buttonText: '{{ $Field->buttonText }}',
     buttonClass: 'btn btn-primary',
     fileObjName: '{{ $Field->objName }}',
@@ -17,7 +17,8 @@
     multi: {{ $Field->multi }},
     formData: {
       _token: '{{ csrf_token() }}',
-      name: '{{ $Field->key }}'
+      name: '{{ $Field->key }}',
+      hash: '{{ $Model->hash }}'
     },
     queueID: undefined,
     itemTemplate: undefined,
