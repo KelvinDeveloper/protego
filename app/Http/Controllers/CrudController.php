@@ -91,10 +91,20 @@ class CrudController extends Controller
      * */
     public function delete ($Model, $id)
     {
-        $Model = (new ModelController())->getModel($Model);
+        $Model = (new ModelController())->getModel($Model, true);
         $Item  = (new ModelController())->getValue($Model, $id);
 
         $Item->delete();
+
+        foreach ($Model->field as $Field) {
+
+            switch ($Field->type) {
+
+                case 'pics':
+                    \File::deleteDirectory(public_path('img') . "{$Field->path}{$id}/");
+                    break;
+            }
+        }
 
         return $Item;
     }
@@ -122,11 +132,16 @@ class CrudController extends Controller
 
             foreach ($Field->resize as $Size) {
 
+                $Info = pathinfo($File->getClientOriginalName());
+
                 (new FolderController())->create("{$Field->path}thumb");
 
                 $Object = \Image::make("{$Field->path}{$File->getClientOriginalName()}");
-                $Object->resize($Size[0], $Size[1]);
-                $Object->save("{$Field->path}thumb/{$File->getFileName()}-{$Size[0]}x$Size[1].{$File->getClientOriginalExtension()}");
+                $Object->resize($Size[0], $Size[1], function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $Object->save("{$Field->path}thumb/{$Info['filename']}-{$Size[0]}x$Size[1].{$File->getClientOriginalExtension()}");
             }
         }
     }

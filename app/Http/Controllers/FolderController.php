@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class FolderController extends Controller
 {
+    /**
+     * Create folders and sub folders ex.: (/new/folders/create)
+     *
+     * @return bool
+     * */
     public function create($location)
     {
         $path = '';
@@ -23,5 +28,7 @@ class FolderController extends Controller
 
             $path .= "{$dir}";
         }
+
+        return true;
     }
 }
