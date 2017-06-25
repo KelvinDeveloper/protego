@@ -1,8 +1,8 @@
 <tbody>
     @foreach($Values as $Value)
         <tr>
-        @foreach($Table as $Name => $Field)
-            <td>{!! $Value->{$Name} !!}</td>
+        @foreach($Model->field as $Name => $Field)
+            <td {!! $Field->type == 'pics' ? 'style="width: 120px;"' : '' !!}>{!! $Value->{$Name} !!}</td>
         @endforeach
             <td>
                 <div class="btn-group btn-space">

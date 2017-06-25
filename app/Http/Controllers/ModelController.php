@@ -223,15 +223,18 @@ class ModelController extends Controller
 
                     if (! empty($Value->{$Field->key}) && $Files = scandir( $Path ) ) {
 
-                        foreach ( $Files as $File ) {
+                        $Location = $Value->{$Field->key};
+                        $HTML .= view('grid.image', compact('Path', 'Field', 'Files', 'Location'))->render();
 
-                            if( @is_array( getimagesize( $Path . $File ) ) ) {
-
-                                $File     = pathinfo($File);
-                                $Location = $Value->{$Field->key};
-                                $HTML .= view('grid.image', compact('Field', 'File', 'Location'))->render();
-                            }
-                        }
+//                        foreach ( $Files as $File ) {
+//
+//                            if( @is_array( getimagesize( $Path . $File ) ) ) {
+//
+//                                $File     = pathinfo($File);
+//                                $Location = $Value->{$Field->key};
+//                                $HTML .= view('grid.image', compact('Field', 'File', 'Location'))->render();
+//                            }
+//                        }
                     }
 
                     $Value->{$Field->key} = $HTML;

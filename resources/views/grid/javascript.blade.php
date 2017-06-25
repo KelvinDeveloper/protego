@@ -35,4 +35,14 @@ $('.delete').click(function () {
 
   return false;
 });
+
+$(document).ready(function() {
+    $("#light-slider").lightSlider({
+        autoWidth: 100,
+        slideMove: 1, // slidemove will be 1 if loop is true
+        thumbItem:1,
+        gallery: false,
+        currentPagerPosition: 'middle',
+    });
+});
 </script>
