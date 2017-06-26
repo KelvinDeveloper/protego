@@ -25,5 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/{Model}/{id}', 'RouteController@show');
     Route::post('/{Model}/{id}/save', 'CrudController@save');
     Route::delete('/{Model}/{id}/delete', 'CrudController@delete');
+
     Route::post('/{Model}/{id}/file/upload', 'CrudController@uploadFile');
+    Route::post('/{Model}/{id}/file/delete', 'CrudController@deleteFile');
 });

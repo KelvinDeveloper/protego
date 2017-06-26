@@ -16,8 +16,6 @@ class Product extends Model
         'pics'  =>  [
             'label'     =>  'Fotos',
             'type'      =>  'pics',
-            'max'       =>  10,
-            'path'      =>  '/product/',
             'resize'    =>  [ [100, 100], [300, 300] ]
         ],
         'name'  =>  [

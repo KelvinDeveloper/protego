@@ -37,7 +37,7 @@ $('.delete').click(function () {
 });
 
 $(document).ready(function() {
-    $("#light-slider").lightSlider({
+    $('.lightSlider').lightSlider({
         autoWidth: 100,
         slideMove: 1, // slidemove will be 1 if loop is true
         thumbItem:1,

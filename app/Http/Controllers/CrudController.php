@@ -145,4 +145,31 @@ class CrudController extends Controller
             }
         }
     }
+
+    /**
+     * Delete archives
+     * */
+    public function deleteFile (Request $request, $Model, $id)
+    {
+        $Model = $this->ModelController->getModel($Model, true);
+
+        if ( $id != 'new' ) {
+
+            $Value = $this->ModelController->getValue($Model, $id);
+
+            if (! $Value ) {
+
+                abort(500);
+            }
+        }
+
+        $File = pathinfo($request->location);
+
+        \File::deleteDirectory( $request->location );
+
+        foreach ($Model->field[ $request->field ]->resize as $Size) {
+
+            \File::deleteDirectory( $File['dirname'] . "/thumb/{$File['filename']}-{$Size[0]}x{$Size[1]}.{$File['extension']}" );
+        }
+    }
 }

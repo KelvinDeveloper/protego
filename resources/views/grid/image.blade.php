@@ -1,5 +1,5 @@
 <div class="clearfix" style="width:100px;">
-    <ul id="light-slider" class="gallery list-unstyled ">
+    <ul class="gallery list-unstyled lightSlider">
         @foreach ( $Files as $File )
 
             @if( @is_array( getimagesize( $Path . $File ) ) )

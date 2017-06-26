@@ -1,12 +1,10 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">{{ $Field->name }}</label>
-    <div class="col-sm-6">
-        <input name="{{ $Field->key }}" type="text" class="form-control" value="{{ $Field->value }}">
-    </div>
+    {!! $Field->value !!}
 </div>
 
 <script>
-  $('[name="{{ $Field->key }}"]').uploadifive({
+  $('button[name="{{ $Field->key }}"]').uploadifive({
     auto: {{ $Field->auto }},
     uploadScript: '/{{ str_singular($Model->getTable()) }}/{{ $Value->id ?: 'new' }}/file/upload',
     buttonText: '{{ $Field->buttonText }}',

@@ -15,4 +15,5 @@
             </div>
         </div>
     </div>
+    {!! view('form.javascript', compact('Model', 'Value'))->render() !!}
 @endsection

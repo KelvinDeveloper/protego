@@ -132,7 +132,7 @@ class ModelController extends Controller
 
         foreach ($Model->where('work_group_id', Session::get('work_group')->id)->orderBy('id', 'DESC')->get() as $Value ) {
 
-            $Values[] = $this->formatData($Value, $Model);
+            $Values[] = $this->formatData($Value, $Model, 'grid');
         }
 
         return $Values;
@@ -155,7 +155,7 @@ class ModelController extends Controller
             ];
         }
 
-        $Value = $this->formatData($Value, $Model);
+        $Value = $this->formatData($Value, $Model, 'form');
 
         return  $Value;
     }
@@ -203,7 +203,7 @@ class ModelController extends Controller
     /**
      * Format data for update database
      * */
-    public function formatData($Value, $Model)
+    public function formatData($Value, $Model, $Type = 'form')
     {
         foreach ($Model->field as $Field) {
 
@@ -224,17 +224,7 @@ class ModelController extends Controller
                     if (! empty($Value->{$Field->key}) && $Files = scandir( $Path ) ) {
 
                         $Location = $Value->{$Field->key};
-                        $HTML .= view('grid.image', compact('Path', 'Field', 'Files', 'Location'))->render();
-
-//                        foreach ( $Files as $File ) {
-//
-//                            if( @is_array( getimagesize( $Path . $File ) ) ) {
-//
-//                                $File     = pathinfo($File);
-//                                $Location = $Value->{$Field->key};
-//                                $HTML .= view('grid.image', compact('Field', 'File', 'Location'))->render();
-//                            }
-//                        }
+                        $HTML .= view($Type . '.image', compact('Path', 'Field', 'Files', 'Location'))->render();
                     }
 
                     $Value->{$Field->key} = $HTML;
