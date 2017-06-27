@@ -6,7 +6,7 @@
 
                 <?php $File = pathinfo($File); ?>
 
-                <li data-thumb="/img{{ $Location }}thumb/{{ $File['filename'] }}-100x100.{{ $File['extension'] }}">
+                <li>
                     <img src="/img{{ $Location }}thumb/{{ $File['filename'] }}-100x100.{{ $File['extension'] }}" />
                 </li>
             @endif

@@ -37,12 +37,15 @@ $('.delete').click(function () {
 });
 
 $(document).ready(function() {
-    $('.lightSlider').lightSlider({
+
+    setTimeout(function () {
+      $('.lightSlider').lightSlider({
         autoWidth: 100,
         slideMove: 1, // slidemove will be 1 if loop is true
         thumbItem:1,
-        gallery: false,
-        currentPagerPosition: 'middle',
-    });
+        // gallery: false,
+        // currentPagerPosition: 'middle',
+      });
+    }, 1000)
 });
 </script>

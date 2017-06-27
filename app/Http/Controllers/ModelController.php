@@ -143,7 +143,7 @@ class ModelController extends Controller
      *
      * @return object
      * */
-    public function getValue($Model, $id)
+    public function getValue($Model, $id, $Type = 'form')
     {
         $Model = $this->getModel( str_singular( $Model->getTable() ), true );
         $Value = [];
@@ -155,7 +155,7 @@ class ModelController extends Controller
             ];
         }
 
-        $Value = $this->formatData($Value, $Model, 'form');
+        $Value = $this->formatData($Value, $Model, $Type);
 
         return  $Value;
     }
@@ -217,6 +217,8 @@ class ModelController extends Controller
                     break;
 
                 case 'pics':
+
+                    if ($Type == 'save') continue;
 
                     $HTML = '';
                     $Path = public_path('img') . "{$Field->path}{$Value->id}/";

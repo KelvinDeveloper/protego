@@ -20,7 +20,7 @@ class CrudController extends Controller
     public function save (Request $request, $Model, $id)
     {
         $Model     = $this->ModelController->getModel($Model);
-        $Value     = $this->ModelController->getValue($Model, $id);
+        $Value     = $this->ModelController->getValue($Model, $id, 'save');
 
         if (! $Value->id) {
 
@@ -69,7 +69,6 @@ class CrudController extends Controller
      * */
     public function formatData($request, $Model, $id)
     {
-
         foreach ($this->ModelController->tableDetails($Model) as $Field) {
 
             if (! isset( $request[$Field->key] ) ) continue;
@@ -163,13 +162,15 @@ class CrudController extends Controller
             }
         }
 
-        $File = pathinfo($request->location);
+        $File = pathinfo( public_path() . $request->location);
 
-        \File::deleteDirectory( $request->location );
+        \File::delete( public_path() . $request->location );
 
         foreach ($Model->field[ $request->field ]->resize as $Size) {
 
-            \File::deleteDirectory( $File['dirname'] . "/thumb/{$File['filename']}-{$Size[0]}x{$Size[1]}.{$File['extension']}" );
+            \File::delete( $File['dirname'] . "/thumb/{$File['filename']}-{$Size[0]}x{$Size[1]}.{$File['extension']}" );
         }
+
+        return $File;
     }
 }

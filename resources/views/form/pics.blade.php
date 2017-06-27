@@ -11,6 +11,8 @@
     buttonClass: 'btn btn-primary',
     fileObjName: '{{ $Field->objName }}',
     fileSizeLimit: '{{ $Field->sizeLimit }}MB',
+    width: 150,
+    height: 150,
 {{--    fileType: '{{ $Field->fileType }}',--}}
     multi: {{ $Field->multi }},
     formData: {

@@ -1,5 +1,15 @@
 <div class="clearfix col-sm-9">
     <ul class="form-pics">
+
+        <li style="position: relative" class="upload-file">
+            <span>
+                <i class="material-icons">cloud_upload</i> <br>
+                <span>Selecionar arquivos</span>
+            </span>
+
+            <button name="{{ $Field->key }}"></button>
+        </li>
+
         @foreach ( $Files as $File )
 
             @if( @is_array( getimagesize( $Path . $File ) ) )
