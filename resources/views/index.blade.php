@@ -67,14 +67,7 @@
           $(document).ready(function(){
             //initialize the javascript
             App.init();
-            App.charts();
           });
-        </script>
-        <script type="text/javascript">
-          $(document).ready(function(){
-            App.livePreview();
-          });
-
         </script>
 	</body>
 </html>

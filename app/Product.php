@@ -15,8 +15,7 @@ class Product extends Model
     public $field = [
         'pics'  =>  [
             'label'     =>  'Fotos',
-            'type'      =>  'pics',
-            'resize'    =>  [ [100, 100], [300, 300] ]
+            'type'      =>  'pics'
         ],
         'name'  =>  [
             'label' =>  'Nome',

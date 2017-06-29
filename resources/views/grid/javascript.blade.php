@@ -41,11 +41,9 @@ $(document).ready(function() {
     setTimeout(function () {
       $('.lightSlider').lightSlider({
         autoWidth: 100,
-        slideMove: 1, // slidemove will be 1 if loop is true
-        thumbItem:1,
-        // gallery: false,
-        // currentPagerPosition: 'middle',
+        slideMove: 1,
+        thumbItem:1
       });
-    }, 1000)
+    }, 500)
 });
 </script>

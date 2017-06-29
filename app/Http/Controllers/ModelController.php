@@ -56,14 +56,14 @@ class ModelController extends Controller
 
         foreach ($this->tableDetails($Class) as $Field) {
 
-            if (! isset( $Class->field[ $Field->key ] ) ) {
+            if (! isset( $Class->field[ $Field->name ] ) ) {
 
-                $Class->field[ $Field->key ] = [];
+                $Class->field[ $Field->name ] = [];
             }
 
-            $Class->field[ $Field->key ] = array_merge((array) $Field, $Class->field[ $Field->key ]);
+            $Class->field[ $Field->name ] = array_merge((array) $Field, $Class->field[ $Field->name ]);
 
-            switch ( $Class->field[ $Field->key ]['type'] ) {
+            switch ( $Class->field[ $Field->name ]['type'] ) {
 
                 case 'pics':
 
@@ -72,7 +72,7 @@ class ModelController extends Controller
                      *
                      * http://www.uploadify.com/documentation/uploadifive/
                      * */
-                    $Class->field[ $Field->key ] = array_merge([
+                    $Class->field[ $Field->name ] = array_merge([
                         'auto'      =>  'true',
                         'buttonText'=>  'Selecionar arquivos',
                         'max'       =>  10,
@@ -81,12 +81,12 @@ class ModelController extends Controller
                         'objName'   =>  'file',
                         'multi'     =>  'true',
                         'fileType'  =>  'image/*',
-                        'resize'    =>  false
-                    ], $Class->field[ $Field->key ]);
+                        'resize'    =>  [ [100, 100], [150, 150] ]
+                    ], $Class->field[ $Field->name ]);
                     break;
             }
 
-            $Class->field[ $Field->key ] = (object) $Class->field[ $Field->key ];
+            $Class->field[ $Field->name ] = (object) $Class->field[ $Field->name ];
         }
 
         return $Class;
@@ -109,8 +109,8 @@ class ModelController extends Controller
             $Name = str_replace('`', '', $Name);
 
             $Columns[ $Name ] = (object) [
-                'name'      =>  isset( $Model->field[ $Name ]->label ) ? $Model->field[ $Name ]->label : ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
-                'key'       =>  $Name,
+                'label'     =>  isset( $Model->field[ $Name ]->label ) ? $Model->field[ $Name ]->label : ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
+                'name'      =>  $Name,
                 'type'		=>	$Column->getType()->getName(),
                 'length'	=>	$Column->getLength(),
                 'scale'		=>	$Column->getScale(),
@@ -207,13 +207,13 @@ class ModelController extends Controller
     {
         foreach ($Model->field as $Field) {
 
-            if (! isset( $Value->{$Field->key} ) ) continue;
+            if (! isset( $Value->{$Field->name} ) ) continue;
 
             switch ($Field->type) {
 
                 case 'decimal':
 
-                    $Value->{$Field->key} = number_format( $Value->{$Field->key} , $Field->scale, ',', '.');
+                    $Value->{$Field->name} = number_format( $Value->{$Field->name}, $Field->scale, ',', '.');
                     break;
 
                 case 'pics':
@@ -223,13 +223,13 @@ class ModelController extends Controller
                     $HTML = '';
                     $Path = public_path('img') . "{$Field->path}{$Value->id}/";
 
-                    if (! empty($Value->{$Field->key}) && $Files = scandir( $Path ) ) {
+                    if (! empty($Value->{$Field->name}) && $Files = scandir( $Path ) ) {
 
-                        $Location = $Value->{$Field->key};
+                        $Location = $Value->{$Field->name};
                         $HTML .= view($Type . '.image', compact('Path', 'Field', 'Files', 'Location'))->render();
                     }
 
-                    $Value->{$Field->key} = $HTML;
+                    $Value->{$Field->name} = $HTML;
                     break;
             }
         }

@@ -13,6 +13,10 @@
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
+Route::get('/terms-and-conditions', function () {
+
+    return view('auth.terms-and-conditions')->render();
+});
 
 Route::group(['middleware' => 'auth'], function () {
 

@@ -1,7 +1,7 @@
 <thead>
     <tr>
         @foreach($Table as $Name => $Field)
-            <th>{{ $Field->name }}</th>
+            <th>{{ $Field->label }}</th>
         @endforeach
             <th style="width: 130px"></th>
     </tr>

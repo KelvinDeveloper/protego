@@ -56,7 +56,7 @@ class CrudController extends Controller
                         rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");
                     }
 
-                    $Value->{$Field->key} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
+                    $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
                     break;
             }
         }
@@ -71,13 +71,13 @@ class CrudController extends Controller
     {
         foreach ($this->ModelController->tableDetails($Model) as $Field) {
 
-            if (! isset( $request[$Field->key] ) ) continue;
+            if (! isset( $request[$Field->name] ) ) continue;
 
             switch ($Field->type) {
 
                 case 'decimal':
 
-                    $request[$Field->key] = $this->ModelController->BRLCurrencyToFloat($request[$Field->key]);
+                    $request[$Field->name] = $this->ModelController->BRLCurrencyToFloat($request[$Field->name]);
                     break;
             }
         }

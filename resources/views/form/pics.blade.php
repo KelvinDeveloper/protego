@@ -1,10 +1,24 @@
 <div class="form-group">
-    <label class="col-sm-3 control-label">{{ $Field->name }}</label>
-    {!! $Field->value !!}
+    <label class="col-sm-3 control-label">{{ $Field->label }}</label>
+    <div class="clearfix col-sm-9">
+        <ul class="form-pics">
+
+            <li style="position: relative" class="upload-file">
+            <span>
+                <i class="material-icons">cloud_upload</i> <br>
+                <span>Selecionar arquivos</span>
+            </span>
+
+                <button name="{{ $Field->name }}"></button>
+            </li>
+
+            {!! $Field->value !!}
+        </ul>
+    </div>
 </div>
 
 <script>
-  $('button[name="{{ $Field->key }}"]').uploadifive({
+  $('button[name="{{ $Field->name }}"]').uploadifive({
     auto: {{ $Field->auto }},
     uploadScript: '/{{ str_singular($Model->getTable()) }}/{{ $Value->id ?: 'new' }}/file/upload',
     buttonText: '{{ $Field->buttonText }}',
@@ -13,11 +27,10 @@
     fileSizeLimit: '{{ $Field->sizeLimit }}MB',
     width: 150,
     height: 150,
-{{--    fileType: '{{ $Field->fileType }}',--}}
     multi: {{ $Field->multi }},
     formData: {
       _token: '{{ csrf_token() }}',
-      name: '{{ $Field->key }}',
+      name: '{{ $Field->name }}',
       hash: '{{ $Model->hash }}'
     },
     queueID: undefined,
