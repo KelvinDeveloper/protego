@@ -16,20 +16,22 @@ class CreateTableClient extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->string('pic', 255)->nullable();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('cep');
-            $table->string('street');
-            $table->string('number');
-            $table->string('state');
-            $table->string('city');
-            $table->string('complement');
-            $table->string('phone');
-            $table->string('cel');
-            $table->string('facebook');
-            $table->string('instagram');
-            $table->string('twitter');
+            $table->string('email')->unique()->nullable();
+            $table->string('cep')->nullable();
+            $table->string('street')->nullable();
+            $table->string('number')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('complement')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('cel')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('twitter')->nullable();
 
+            $table->integer('work_group_id');
             $table->timestamps();
         });
     }

@@ -27,7 +27,7 @@ class RouteController extends Controller
             return redirect('/' . str_singular( $Model->getTable() ) . '/form');
         }
 
-        $Table  = $this->ModelController->tableDetails($Model);
+        $Table  = $this->ModelController->tableDetails($Model, 'grid');
         $Values = $this->ModelController->getValues($Model);
 
         return view('grid.index', compact('Model', 'Table', 'Values'))->render();
