@@ -39,11 +39,14 @@ class ModelController extends Controller
      *
      * @return object
      * */
-    private function setDefault($Class)
+    private function setDefault ($Class)
     {
         $Default = [
-            'title' =>  ucfirst( strtolower( str_plural( $Class->getTable() ) ) ),
-            'hash'  =>  false,
+            'title'     =>  ucfirst( strtolower( str_plural( $Class->getTable() ) ) ),
+            'hash'      =>  false,
+            'access'    =>  ['api', 'form', 'grid'],
+            'field'     =>  (object)[],
+            'hidden'    =>  []
         ];
 
         foreach ($Default as $key => $value) {
@@ -56,14 +59,19 @@ class ModelController extends Controller
 
         foreach ($this->tableDetails($Class) as $Field) {
 
-            if (! isset( $Class->field[ $Field->name ] ) ) {
+            $Class->field = (object) $Class->field;
 
-                $Class->field[ $Field->name ] = [];
+            if ( isset( $Class->field ) ) {
+
+                if (! isset( $Class->field->{$Field->name} )) {
+
+                    $Class->field->{$Field->name} = [];
+                }
             }
 
-            $Class->field[ $Field->name ] = array_merge((array) $Field, $Class->field[ $Field->name ]);
+            $Class->field->{$Field->name} = array_merge((array) $Field, $Class->field->{$Field->name} );
 
-            switch ( $Class->field[ $Field->name ]['type'] ) {
+            switch ( $Class->field->{$Field->name }['type'] ) {
 
                 case 'pics':
 
@@ -72,7 +80,7 @@ class ModelController extends Controller
                      *
                      * http://www.uploadify.com/documentation/uploadifive/
                      * */
-                    $Class->field[ $Field->name ] = array_merge([
+                    $Class->field->{$Field->name} = array_merge([
                         'auto'      =>  'true',
                         'buttonText'=>  'Selecionar arquivos',
                         'max'       =>  10,
@@ -82,11 +90,11 @@ class ModelController extends Controller
                         'multi'     =>  'true',
                         'fileType'  =>  'image/*',
                         'resize'    =>  [ [100, 100], [150, 150] ]
-                    ], $Class->field[ $Field->name ]);
+                    ], $Class->field->{$Field->name});
                     break;
             }
 
-            $Class->field[ $Field->name ] = (object) $Class->field[ $Field->name ];
+            $Class->field->{$Field->name} = (object) $Class->field->{$Field->name};
         }
 
         return $Class;
@@ -109,13 +117,21 @@ class ModelController extends Controller
             $Name = str_replace('`', '', $Name);
 
             $Columns[ $Name ] = (object) [
-                'label'     =>  isset( $Model->field[ $Name ]->label ) ? $Model->field[ $Name ]->label : ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
+                'label'     =>  ucfirst( strtolower( str_replace('_', ' ', $Name) ) ),
                 'name'      =>  $Name,
                 'type'		=>	$Column->getType()->getName(),
                 'length'	=>	$Column->getLength(),
                 'scale'		=>	$Column->getScale(),
                 'precision' =>	$Column->getPrecision()
             ];
+
+            if ( is_array($Model->field) ) {
+
+                if ( isset( $Model->field[ $Name ]->label )  ) {
+
+                    $Columns[ $Name ]->label = $Model->field[ $Name ]->label;
+                }
+            }
         }
 
         return (object) $Columns;
@@ -126,11 +142,17 @@ class ModelController extends Controller
      *
      * @return object
      * */
-    public function getValues($Model)
+    public function getValues ($Model)
     {
         $Values = [];
+        $ObjValues = $Model;
 
-        foreach ($Model->where('work_group_id', Session::get('work_group')->id)->orderBy('id', 'DESC')->get() as $Value ) {
+        if ( in_array('work_group_id', $Model->hidden) ) {
+
+            $ObjValues = $Model->where('work_group_id', Session::get('work_group')->id);
+        }
+
+        foreach ( $ObjValues->orderBy('id', 'DESC')->get() as $Value ) {
 
             $Values[] = $this->formatData($Value, $Model, 'grid');
         }
@@ -143,12 +165,27 @@ class ModelController extends Controller
      *
      * @return object
      * */
-    public function getValue($Model, $id, $Type = 'form')
+    public function getValue ($Model, $id, $Type = 'form')
     {
         $Model = $this->getModel( str_singular( $Model->getTable() ), true );
-        $Value = [];
+        $Value = $Model;
 
-        if (! $Value = $Model->where('work_group_id', Session::get('work_group')->id)->where('id', $id)->first() ) {
+        if ( in_array('work_group_id', $Model->hidden) ) {
+
+            $Value = $Model->where('work_group_id', Session::get('work_group')->id);
+        }
+
+        if ( $id == 'form' && method_exists( $Model, 'formCustomWhere' ) ) {
+            /* Custom where */
+            $Value = $Model->formCustomWhere( $Model );
+        } else {
+            /* Default */
+            $Value->where('id', $id);
+        }
+
+        $Value = $Value->first();
+
+        if (! $Value ) {
 
             $Value = (object)[
               'id'  =>  false
@@ -165,7 +202,7 @@ class ModelController extends Controller
      *
      * @return HTML
      * */
-    public function getForm($Value, $Model)
+    public function getForm ($Value, $Model)
     {
         $HTML = '';
 
@@ -203,7 +240,7 @@ class ModelController extends Controller
     /**
      * Format data for update database
      * */
-    public function formatData($Value, $Model, $Type = 'form')
+    public function formatData ($Value, $Model, $Type = 'form')
     {
         foreach ($Model->field as $Field) {
 
@@ -220,16 +257,19 @@ class ModelController extends Controller
 
                     if ($Type == 'save') continue;
 
-                    $HTML = '';
-                    $Path = public_path('img') . "{$Field->path}{$Value->id}/";
+                    if ($Field->multi != 'false') {
 
-                    if (! empty($Value->{$Field->name}) && $Files = scandir( $Path ) ) {
+                        $HTML = '';
+                        $Path = public_path('img') . "{$Field->path}{$Value->id}/";
 
-                        $Location = $Value->{$Field->name};
-                        $HTML .= view($Type . '.image', compact('Path', 'Field', 'Files', 'Location'))->render();
+                        if (! empty($Value->{$Field->name}) && $Files = scandir( $Path ) ) {
+
+                            $Location = $Value->{$Field->name};
+                            $HTML .= view($Type . '.images', compact('Path', 'Field', 'Files', 'Location'))->render();
+                        }
+
+                        $Value->{$Field->name} = $HTML;
                     }
-
-                    $Value->{$Field->name} = $HTML;
                     break;
             }
         }
@@ -242,7 +282,7 @@ class ModelController extends Controller
      *
      * @return @float
      * */
-    public function BRLCurrencyToFloat($number)
+    public function BRLCurrencyToFloat ($number)
     {
         if ($number && !is_numeric($number)) {
             $number = str_replace(',', '.', str_replace('.', '', $number));
@@ -256,7 +296,7 @@ class ModelController extends Controller
      *
      * @return string
      * */
-    public function BRLFloatToCurrency($number, $scale = 2)
+    public function BRLFloatToCurrency ($number, $scale = 2)
     {
         if (is_numeric($number)) {
             $number = number_format($number, $scale);

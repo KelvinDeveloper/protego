@@ -21,6 +21,12 @@ class RouteController extends Controller
     public function index ($Model)
     {
         $Model  = $this->ModelController->getModel($Model, true);
+
+        if (! in_array('grid', $Model->access) ) {
+
+            return redirect('/' . str_singular( $Model->getTable() ) . '/form');
+        }
+
         $Table  = $this->ModelController->tableDetails($Model);
         $Values = $this->ModelController->getValues($Model);
 

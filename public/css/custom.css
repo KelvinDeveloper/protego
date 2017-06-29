@@ -71,3 +71,13 @@ i.right {
 .form-pics li:hover i.material-icons {
   opacity: 1;
 }
+
+.person-pic {
+  margin-top: 5px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+}

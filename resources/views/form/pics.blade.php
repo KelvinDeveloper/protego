@@ -1,6 +1,11 @@
 <div class="form-group">
     <label class="col-sm-3 control-label">{{ $Field->label }}</label>
     <div class="clearfix col-sm-9">
+
+        @if ( $Field->multi == 'false' )
+            <input type="hidden" name="{{ $Field->name }}">
+        @endif
+
         <ul class="form-pics">
 
             <li style="position: relative" class="upload-file">
@@ -12,7 +17,16 @@
                 <button name="{{ $Field->name }}"></button>
             </li>
 
-            {!! $Field->value !!}
+            @if ( $Field->multi == 'false' )
+                <?php $File = pathinfo($Field->value); ?>
+                @if ( ! empty( $Field->value ) )
+                    <li style="background-image: url( '/img{{ $File['dirname'] }}/thumb/{{ $File['filename'] }}-150x150.{{ $File['extension'] }}' )">
+                        <i class="material-icons right delete-file" data-location="/img{{ $Field->path }}{{ $File['basename'] }}" name="{{ $Field->name }}">delete</i>
+                    </li>
+                @endif
+            @else
+                {!! $Field->value !!}
+            @endif
         </ul>
     </div>
 </div>
@@ -52,7 +66,10 @@
 
     onUploadComplete: function (file, data) {
 
-//      var json = JSON.parse(data);
+        @if ( $Field->multi == 'false' )
+            $('[name="{{ $Field->name }}"]').val( file.name );
+        @endif
+
 //
 //      $('#form-' + Array.Target + ' [name="' + Array.Field + '"]').val(json.file);
 //      file.queueItem.parents('.image-upload').css({

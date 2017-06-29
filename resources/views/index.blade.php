@@ -43,6 +43,20 @@
                                 'href'	=>	'/product/new'
                             ]
                         ]
+                    ],
+                    1	=>	[
+                        'name'	=>	'Clientes',
+                        'icon'  =>  'group',
+                        'items' =>  [
+                            0   =>  [
+                                'name'  =>  'Todos os clientes',
+                                'href'	=>	'/client'
+                            ],
+                            1   =>  [
+                                'name'  =>  'Novo cliente',
+                                'href'	=>	'/client/new'
+                            ]
+                        ]
                     ]
                 ]])
 

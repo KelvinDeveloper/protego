@@ -22,6 +22,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'HomeController@index');
 
+    Route::get('/my-account', function () {
+
+        return redirect('/user');
+    });
+
     /**
      * Generic methods
      * */

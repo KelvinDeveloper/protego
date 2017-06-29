@@ -12,6 +12,8 @@ class Product extends Model
 
     public $title = 'Produto';
 
+    // public $access = ['api', 'form'];
+
     public $field = [
         'pics'  =>  [
             'label'     =>  'Fotos',
@@ -27,4 +29,9 @@ class Product extends Model
             'label' =>  'Preço',
         ],
     ];
+
+    public function formCustomWhere ($Model) {
+
+        return $Model->where('id', 10);
+    }
 }

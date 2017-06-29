@@ -56,7 +56,14 @@ class CrudController extends Controller
                         rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");
                     }
 
-                    $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
+                    if ( $Field->multi == 'false' ) {
+
+                        $File = pathinfo($Value->{$Field->name});
+
+                        $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/{$File['basename']}";
+                    } else {
+                        $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
+                    }
                     break;
             }
         }

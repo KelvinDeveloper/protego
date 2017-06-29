@@ -4,10 +4,13 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    public $access = ['api', 'form'];
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'pic', 'name', 'email', 'password',
     ];
 
     /**
@@ -32,7 +35,11 @@ class User extends Authenticatable
 
     public $table = 'users';
 
-    public $fields =  [
+    public $field =  [
+        'pic'  =>  [
+            'type'  =>  'pics',
+            'multi'  =>  'false'
+        ],
         'email' =>  [
             'type'  =>  'email'
         ]
@@ -54,5 +61,10 @@ class User extends Authenticatable
         'hidden'    =>  ['password', 'remember_token'],
         'url'       =>  '/user'
     ];
+
+    public function customWhere ($Model) {
+
+        return $Model->where('id', Auth::user()->id);
+    }
 
 }
