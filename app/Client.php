@@ -12,6 +12,8 @@ class Client extends Model
 
     public $hidden = ['id', 'created_at', 'updated_at'];
 
+    public $title = 'Cliente';
+
     public $grid = [
         'hidden'    =>  ['cep', 'street', 'number', 'state', 'city', 'complement', 'facebook', 'instagram', 'twitter']
     ];
