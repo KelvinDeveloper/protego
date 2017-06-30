@@ -57,6 +57,28 @@
                                 'href'	=>	'/client/new'
                             ]
                         ]
+                    ],
+                    2   =>  [
+                        'name'  =>  'Configurações',
+                        'icon'  =>  'settings',
+                        'items' =>  [
+                            0   =>  [
+                                'name'  =>  'Loja',
+                                'href'  =>  '/store'
+                            ],
+                            1   =>  [
+                                'name'  =>  'Vitrine virtual',
+                                'href'  =>  '/showcase'
+                            ],
+                            2   =>  [
+                                'name'  =>  'Metodos de pagamento',
+                                'href'  =>  '/payment'
+                            ],
+                            3   =>  [
+                                'name'  =>  'Usuários',
+                                'href'  =>  '/users'
+                            ]
+                        ]
                     ]
                 ]])
 

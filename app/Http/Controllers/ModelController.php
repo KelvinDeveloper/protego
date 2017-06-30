@@ -152,6 +152,11 @@ class ModelController extends Controller
             $ObjValues = $Model->where('work_group_id', Session::get('work_group')->id);
         }
 
+        if ( method_exists( $Model, 'gridCustomWhere' ) ) {
+
+            $ObjValues = $Model->gridCustomWhere($Model);
+        }
+
         foreach ( $ObjValues->orderBy('id', 'DESC')->get() as $Value ) {
 
             $Values[] = $this->formatData($Value, $Model, 'grid');

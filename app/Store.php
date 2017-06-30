@@ -3,42 +3,30 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
-class Client extends Model
+class Store extends Model
 {
-    public $fillable = [
-        'name', 'email', 'cep', 'street', 'number', 'state', 'city', 'complement', 'phone', 'cel', 'facebook', 'instagram', 'twitter'
-    ];
+    public $access = ['api', 'form'];
+
+    protected $fillable = ['name', 'description', 'phone', 'cep', 'state', 'city', 'street', 'emails', 'work_group_id'];
 
     public $hidden = ['id', 'work_group_id', 'created_at', 'updated_at'];
 
-    public $title = 'Cliente';
-
-    public $grid = [
-        'hidden'    =>  ['cep', 'street', 'number', 'state', 'city', 'complement', 'facebook', 'instagram', 'twitter']
-    ];
+    public $title = 'Loja';
 
     public $field = [
-        'pic'   =>  [
-            'type'  =>  'pics',
-            'multi' =>  'false',
-            'label' =>  'Foto',
-        ],
         'name'  =>  [
             'label' =>  'Nome'
         ],
-        'email' =>  [
-            'type'  =>  'email'
+        'description'  =>  [
+            'label' =>  'Descrição',
         ],
         'cep'   =>  [
             'type'  =>  'cep'
         ],
         'street'    =>  [
             'label' =>  'Rua'
-        ],
-        'number'    =>  [
-            'type'  =>  'number',
-            'label' =>  'Numero'
         ],
         'state' =>  [
             'type'  =>  'select',
@@ -76,16 +64,13 @@ class Client extends Model
         'city'  =>  [
             'label' =>  'Cidade'
         ],
-        'complement'    =>  [
-            'label' =>  'Complemento',
-        ],
         'phone' =>  [
             'type'  =>  'phone',
             'label' =>  'Telefone'
         ],
-        'cel'   =>  [
-            'type'  =>  'phone',
-            'label' =>  'Celular'
-        ]
     ];
+
+    public function formCustomWhere($Model) {
+        return $Model->where('work_group_id', Session::get('work_group')->id);
+    }
 }

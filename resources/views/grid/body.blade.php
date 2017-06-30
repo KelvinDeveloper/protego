@@ -2,7 +2,8 @@
     @foreach($Values as $Value)
         <tr>
         @foreach($Model->field as $Field)
-            <td {!! $Field->type == 'pics' ? 'style="width: 120px;"' : '' !!}>{!! $Value->{$Field->name} !!}</td>
+            @if ( isset( $Model->grid['hidden'] ) && is_array( $Model->grid['hidden'] ) && in_array( $Field->name, $Model->grid['hidden'] ) ) <?php continue; ?> @endif
+            <td>{!! $Value->{$Field->name} !!}</td>
         @endforeach
             <td>
                 <div class="btn-group btn-space">

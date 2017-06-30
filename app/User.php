@@ -5,12 +5,14 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-    public $access = ['api', 'form'];
+    // public $access = ['api', 'form'];
+    public $title = 'Usuário';
 
     /**
      * The attributes that are mass assignable.
@@ -38,7 +40,11 @@ class User extends Authenticatable
     public $field =  [
         'pic'  =>  [
             'type'  =>  'pics',
-            'multi'  =>  'false'
+            'multi' =>  'false',
+            'label' =>  'Foto'
+        ],
+        'name'  =>  [
+            'label' =>  'Nome'
         ],
         'email' =>  [
             'type'  =>  'email'
@@ -62,9 +68,17 @@ class User extends Authenticatable
         'url'       =>  '/user'
     ];
 
-    public function customWhere ($Model) {
+    public function gridCustomWhere ($Model) {
 
-        return $Model->where('id', Auth::user()->id);
+        $Users = WorkGroupUser::select(['user_id'])->where('work_group_id', Session::get('work_group')->id)->get();
+
+        $Array = [];
+
+        foreach ($Users as $User) {
+            $Array[] = $User->user_id;
+        }
+
+         return $Model->whereIn('id', $Array);
     }
 
 }

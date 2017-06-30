@@ -12,12 +12,17 @@ class Product extends Model
 
     public $title = 'Produto';
 
-    // public $access = ['api', 'form'];
-
     public $field = [
         'pics'  =>  [
             'label'     =>  'Fotos',
             'type'      =>  'pics'
+        ],
+        'status'    =>  [
+            'type'  =>  'select',
+            'options'   =>  [
+                '1'   =>  'Ativo',
+                '0'   =>  'Inativo'
+            ]
         ],
         'name'  =>  [
             'label' =>  'Nome',
@@ -28,10 +33,30 @@ class Product extends Model
         'price'  =>  [
             'label' =>  'Preço',
         ],
+        'stock' =>  [
+            'label' =>  'Quantidade em estoque',
+            'type'  =>  'number'
+        ],
+        'height'    =>  [
+            'label' =>  'Altura',
+            'type'  =>  'number'
+        ],
+        'width' =>  [
+            'label' =>  'Largura',
+            'type'  =>  'number'
+        ],
+        'length'    =>  [
+            'label' =>  'Comprimento',
+            'type'  =>  'number'
+        ]
+    ];
+
+    public $grid = [
+        'hidden'    =>  ['description', 'height', 'width', 'length']
     ];
 
     public function formCustomWhere ($Model) {
 
-        return $Model->where('id', 10);
+        return $Model->where('id', 11);
     }
 }
