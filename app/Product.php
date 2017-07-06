@@ -20,8 +20,8 @@ class Product extends Model
         'status'    =>  [
             'type'  =>  'select',
             'options'   =>  [
-                '1'   =>  'Ativo',
-                '0'   =>  'Inativo'
+                1   =>  'Ativo',
+                0   =>  'Inativo'
             ]
         ],
         'name'  =>  [
