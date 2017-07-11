@@ -51,6 +51,8 @@ class CrudController extends Controller
 
                     if ( $id == 'new' ) {
 
+                        if (! file_exists( storage_path() . "/tmp{$Field->path}{$request->hash}/" ) ) continue;
+
                         (new FolderController())->create(public_path('/img/') . "{$Field->path}{$Value->id}/");
 
                         rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");

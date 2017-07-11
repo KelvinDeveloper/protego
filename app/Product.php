@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'description', 'price', 'work_group_id'];
+    protected $fillable = ['status', 'name', 'description', 'price', 'stock', 'height', 'width', 'length', 'work_group_id'];
 
     public $hidden = ['id', 'work_group_id', 'created_at', 'updated_at'];
 
@@ -54,9 +54,4 @@ class Product extends Model
     public $grid = [
         'hidden'    =>  ['description', 'height', 'width', 'length']
     ];
-
-    public function formCustomWhere ($Model) {
-
-        return $Model->where('id', 11);
-    }
 }
