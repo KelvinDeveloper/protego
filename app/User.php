@@ -29,7 +29,6 @@ class User extends Authenticatable
      * @var array
      */
     public $hidden = [
-        'password',
         'remember_token',
         'created_at',
         'updated_at'
@@ -48,6 +47,10 @@ class User extends Authenticatable
         ],
         'email' =>  [
             'type'  =>  'email'
+        ],
+        'password'  =>  [
+            'type'  =>  'password',
+            'label' =>  'Senha'
         ]
     ];
 

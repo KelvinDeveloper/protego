@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
         <link type="text/css" href="/css/style.css" rel="stylesheet">
         <link type="text/css" href="/css/custom.css" rel="stylesheet">
-        <link type="text/css" href="/css/themes/theme-cake.css" rel="stylesheet">
+        <link type="text/css" href="/css/themes/theme-google.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/lib/sweetalert/dist/sweetalert.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 	</head>

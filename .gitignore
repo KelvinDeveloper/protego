@@ -4,6 +4,9 @@
 /storage/*.key
 /vendor
 /.idea
+/public/tmp
+/public/img/product
+/public/img/user
 Homestead.json
 Homestead.yaml
 .env

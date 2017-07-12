@@ -241,6 +241,9 @@ class ModelController extends Controller
                 case 'decimal':
                     $HTML .= view('form.decimal', compact('Field', 'Model'))->render();
                     break;
+                case 'password':
+                    $HTML .= view('form.password', compact('Field', 'Model'))->render();
+                    break;
                 case 'select':
                     $HTML .= view('form.select', compact('Field', 'Model'))->render();
                     break;

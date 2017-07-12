@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CrudController extends Controller
 {
@@ -19,8 +22,9 @@ class CrudController extends Controller
      * */
     public function save (Request $request, $Model, $id)
     {
-        $Model     = $this->ModelController->getModel($Model);
-        $Value     = $this->ModelController->getValue($Model, $id, 'save');
+        $ModelDefault   = $this->ModelController->getModel($Model, true);
+        $Model          = $this->ModelController->getModel($Model);
+        $Value          = $this->ModelController->getValue($Model, $id, 'save');
 
         if (! $Value->id) {
 
@@ -28,12 +32,12 @@ class CrudController extends Controller
             $Value->work_group_id = Session::get('work_group')->id;
         }
 
-        $Post = $this->formatData($request->all(), $Model, $id);
+        $Post = $this->formatData($request->all(), $ModelDefault, $id);
 
         $Value->fill( $Post );
         $Value->save();
 
-        $this->afterSave($request, $Model, $Value, $id );
+        $this->afterSave($request, $ModelDefault, $Value, $id );
 
         return redirect('/' . str_plural($Model->getTable()));
     }
@@ -43,7 +47,7 @@ class CrudController extends Controller
      * */
     public function afterSave(Request $request, $Model, $Value, $id )
     {
-        foreach ($this->ModelController->getModel($Model->getTable(), true)->field as $Field) {
+        foreach ($Model->field as $Field) {
 
             switch ( $Field->type ) {
 
@@ -60,10 +64,15 @@ class CrudController extends Controller
 
                     if ( $Field->multi == 'false' ) {
 
-                        $File = pathinfo($Value->{$Field->name});
+                        if ( empty( $Value->{$Field->name} ) ) {
 
+                            unset( $Value->{$Field->name} );
+                            continue;
+                        }
+
+                        $File = pathinfo($Value->{$Field->name});
                         $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/{$File['basename']}";
-                    } else {
+                    } else if ( $Field->multi == 'true' ) {
                         $Value->{$Field->name} = '/' . str_singular( $Model->getTable() ) . "/{$Value->id}/";
                     }
                     break;
@@ -78,15 +87,52 @@ class CrudController extends Controller
      * */
     public function formatData($request, $Model, $id)
     {
-        foreach ($this->ModelController->tableDetails($Model) as $Field) {
 
-            if (! isset( $request[$Field->name] ) ) continue;
+        foreach ($Model->field as $Field) {
+
+            if (! isset( $request[$Field->name] ) && $request[$Field->name] !== null ) continue;
 
             switch ($Field->type) {
 
                 case 'decimal':
 
                     $request[$Field->name] = $this->ModelController->BRLCurrencyToFloat($request[$Field->name]);
+                    break;
+
+                case 'password':
+
+                    /**
+                     * Case all variables ! empty
+                     * */
+                    if (! empty( $request[$Field->name] ) && ! empty( $request[$Field->name . '_current'] && ! empty( $request[$Field->name . '_confirmation'] ) ) ) {
+
+                        /**
+                         * Case current password == Auth::user()->password
+                         * */
+                        $Validator = Validator::make($request, [
+                            'password' => 'required|min:3|confirmed'
+                        ]);
+
+                        if (! $Validator->fails()) {
+
+                            if ( Hash::check($request[$Field->name . '_current'], Auth::user()->password) ) {
+
+                                $request[$Field->name] = bcrypt($request[$Field->name]);
+                                unset( $request[$Field->name . '_confirmation'], $request[$Field->name . '_current'] );
+                                continue;
+                            }
+                        }
+                    }
+
+                    unset( $request[$Field->name . '_confirmation'], $request[$Field->name . '_current'], $request[$Field->name] );
+                    break;
+
+                case 'pics':
+
+                    if ( empty( $request[$Field->name] ) ) {
+
+                        unset($request[$Field->name]);
+                    }
                     break;
             }
         }
