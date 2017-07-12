@@ -29,6 +29,11 @@ $(document).on('click', '.delete-file', function () {
 
         This.parents('li').remove();
 
+        if ( This.attr('data-multi') == 'false' ) {
+
+          $('#list-items-' + This.attr('name') + ' li.upload-file').show();
+        }
+
         swal('Deletado!',
             'O registro foi deletado com sucesso',
             'success');

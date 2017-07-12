@@ -81,3 +81,8 @@ i.right {
   background-position: center;
   display: inline-block;
 }
+
+.record-empty {
+  text-align: center;
+  font-size: 16px;
+}

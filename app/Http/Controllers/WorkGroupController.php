@@ -6,7 +6,7 @@ use App\WorkGroup;
 use App\WorkGroupUser;
 use Illuminate\Http\Request;
 
-class WorGroupController extends Controller
+class WorkGroupController extends Controller
 {
     /*
      * Create Work Group

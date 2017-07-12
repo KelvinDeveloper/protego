@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\WorGroupController;
+use App\Http\Controllers\WorkGroupController;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\WorkGroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -71,9 +75,21 @@ class RegisterController extends Controller
 
         if ( $User ) {
 
-            ( new WorGroupController() )->create( $User );
+            ( new WorkGroupController() )->create( $User );
 
             return $User;
         }
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        return Session::put('work_group', WorkGroup::where('user_id', Auth::user()->id )->first() );
     }
 }

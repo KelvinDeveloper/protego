@@ -1,3 +1,5 @@
+<?php $Path = $Value->id ? "/img{$Field->path}{$Value->id}/" : "/tmp{$Field->path}{$Model->hash}/"; ?>
+
 <div class="form-group">
     <label class="col-sm-3 control-label">{{ $Field->label }}</label>
     <div class="clearfix col-sm-9">
@@ -6,22 +8,22 @@
             <input type="hidden" name="{{ $Field->name }}">
         @endif
 
-        <ul class="form-pics">
+        <ul class="form-pics" id="list-items-{{ $Field->name }}">
 
             <li style="position: relative" class="upload-file">
-            <span>
-                <i class="material-icons">cloud_upload</i> <br>
-                <span>Selecionar arquivos</span>
-            </span>
+                <span>
+                    <i class="material-icons">cloud_upload</i> <br>
+                    <span>{{ $Field->multi === "true" ? 'Escolher imagens' : 'Escolher arquivo' }}</span>
+                </span>
 
                 <button name="{{ $Field->name }}"></button>
             </li>
 
             @if ( $Field->multi == 'false' )
                 <?php $File = pathinfo($Field->value); ?>
-                @if ( ! empty( $Field->value ) )
+                @if ( ! empty( $Field->value ) && isset( $File['extension'] ) && file_exists( public_path('img') . "{$File['dirname']}/thumb/{$File['filename']}-150x150.{$File['extension']}" ) )
                     <li style="background-image: url( '/img{{ $File['dirname'] }}/thumb/{{ $File['filename'] }}-150x150.{{ $File['extension'] }}' )">
-                        <i class="material-icons right delete-file" data-location="/img{{ $Field->path }}{{ $File['basename'] }}" name="{{ $Field->name }}">delete</i>
+                        <i class="material-icons right delete-file" data-location="{{ $Path }}{{ $File['basename'] }}" name="{{ $Field->name }}" data-multi="{{ $Field->multi }}">delete</i>
                     </li>
                 @endif
             @else
@@ -47,40 +49,47 @@
       name: '{{ $Field->name }}',
       hash: '{{ $Model->hash }}'
     },
-    queueID: undefined,
-    itemTemplate: undefined,
+    queueID: 'list-items-{{ $Field->name }}',
+    itemTemplate: '<li class="uploadifive-queue-item">' +
+    '<div class="progress">' +
+        '<div style="width: 0%" class="progress-bar progress-bar-success progress-bar-striped active">0%</div>' +
+      '</div>' +
+    '</li>',
 
     onProgress: function (file, e) {
 
-//      Loader(true);
-//      var percent = 0;
-//
-//      if (e.lengthComputable) {
-//
-//        percent = Math.round((e.loaded / e.total) * 100);
-//      }
-//
-//      file.queueItem.parents('.image-upload').find('.progress').show().find('.determinate').css('width', percent + '%');
+      var percent = 0;
 
+      if (e.lengthComputable) {
+
+        percent = Math.round((e.loaded / e.total) * 100);
+      }
+
+      file.queueItem.find('.progress-bar').css('width', percent + '%').text( percent + '%' );
     },
 
     onUploadComplete: function (file, data) {
 
         @if ( $Field->multi == 'false' )
             $('[name="{{ $Field->name }}"]').val( file.name );
+            $('#list-items-{{ $Field->name }}').find('li.upload-file').hide();
         @endif
 
-//
-//      $('#form-' + Array.Target + ' [name="' + Array.Field + '"]').val(json.file);
-//      file.queueItem.parents('.image-upload').css({
-//        'background-image': 'url(\'' + urlBucket + UploadConfig.location + '/' + json.file + '\')'
-//      });
-//
-//      setTimeout(function () {
-//
-//        file.queueItem.parents('.image-upload').find('.progress').hide();
-//        Loader(false);
-//      }, 100);
+        file.queueItem.css({
+          backgroundImage: "url('{{ $Path }}" + file.name + " ')"
+        });
+
+        file.queueItem.prepend('<i class="material-icons right delete-file" data-location="{{ $Path }}' + file.name + '" name="{{ $Field->name }}" data-multi="{{ $Field->multi }}">delete</i>');
+    }
+  });
+
+  $('document').ready(function () {
+
+    var $List = $('#list-items-{{ $Field->name }}');
+
+    if ( $List.find('li').length > 1 ) {
+
+      $List.find('li.upload-file').hide();
     }
   });
 </script>

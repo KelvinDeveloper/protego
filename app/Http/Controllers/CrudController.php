@@ -51,11 +51,11 @@ class CrudController extends Controller
 
                     if ( $id == 'new' ) {
 
-                        if (! file_exists( storage_path() . "/tmp{$Field->path}{$request->hash}/" ) ) continue;
+                        if (! file_exists( public_path('tmp') . "{$Field->path}{$request->hash}/" ) ) continue;
 
                         (new FolderController())->create(public_path('/img/') . "{$Field->path}{$Value->id}/");
 
-                        rename(storage_path() . "/tmp{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");
+                        rename(public_path('tmp') . "{$Field->path}{$request->hash}/", public_path('/img/') . "{$Field->path}{$Value->id}/");
                     }
 
                     if ( $Field->multi == 'false' ) {
@@ -124,12 +124,12 @@ class CrudController extends Controller
     {
         $Model = (new ModelController())->getModel($Model, true);
 
-        $Field            = $Model->field[$request->name];
+        $Field            = $Model->field->{$request->name};
         $File             = $request->file('file');
 
         if ( $id == 'new' ) {
 
-            $Field->path = storage_path() . "/tmp{$Field->path}{$request->hash}/";
+            $Field->path = public_path('tmp') . "{$Field->path}{$request->hash}/";
         } else {
 
             $Field->path = public_path('/img/') . "{$Field->path}{$id}/";
@@ -169,13 +169,19 @@ class CrudController extends Controller
 
                 abort(500);
             }
+
+            if ( $Model->field->{$request->field}->multi == 'false' ) {
+
+                $Value->{$request->field} = '';
+                $Value->save();
+            }
         }
 
         $File = pathinfo( public_path() . $request->location);
 
         \File::delete( public_path() . $request->location );
 
-        foreach ($Model->field[ $request->field ]->resize as $Size) {
+        foreach ($Model->field->{$request->field}->resize as $Size) {
 
             \File::delete( $File['dirname'] . "/thumb/{$File['filename']}-{$Size[0]}x{$Size[1]}.{$File['extension']}" );
         }

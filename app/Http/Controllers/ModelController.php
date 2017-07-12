@@ -49,6 +49,8 @@ class ModelController extends Controller
             'hidden'    =>  []
         ];
 
+        $TotalColumns = 0;
+
         foreach ($Default as $key => $value) {
 
             if (! isset( $Class->{$key} ) ) {
@@ -95,7 +97,16 @@ class ModelController extends Controller
             }
 
             $Class->field->{$Field->name} = (object) $Class->field->{$Field->name};
+
+            if (! isset( $Class->grid['hidden'] ) || !is_array( $Class->grid['hidden'] ) || !in_array( $Field->name, $Class->grid['hidden'] ) ) {
+
+                $TotalColumns++;
+            }
         }
+
+        $Class->total = [
+            'columns'   =>  $TotalColumns
+        ];
 
         return $Class;
     }
@@ -265,18 +276,22 @@ class ModelController extends Controller
 
                     if ($Type == 'save') continue;
 
+                    $Path     = public_path('img') . "{$Field->path}{$Value->id}/";
+                    $Location = $Value->{$Field->name};
+
                     if ($Field->multi != 'false') {
 
                         $HTML = '';
-                        $Path = public_path('img') . "{$Field->path}{$Value->id}/";
 
                         if (! empty($Value->{$Field->name}) && $Files = scandir( $Path ) ) {
 
-                            $Location = $Value->{$Field->name};
                             $HTML .= view($Type . '.images', compact('Path', 'Field', 'Files', 'Location'))->render();
                         }
 
                         $Value->{$Field->name} = $HTML;
+                    } else if ( $Field->multi == 'false' && $Type == 'grid' ) {
+
+                        $Value->{$Field->name} = view('grid.image', Compact('Path', 'Field', 'Value', 'Location'))->render();
                     }
                     break;
             }

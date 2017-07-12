@@ -21,10 +21,11 @@ Route::get('/terms-and-conditions', function () {
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'HomeController@index');
+    Route::get('/home', 'HomeController@index');
 
     Route::get('/my-account', function () {
 
-        return redirect('/user');
+        return redirect('/user/' . Auth::user()->id);
     });
 
     /**
