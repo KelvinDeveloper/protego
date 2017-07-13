@@ -133,7 +133,8 @@ class ModelController extends Controller
                 'type'		=>	$Column->getType()->getName(),
                 'length'	=>	$Column->getLength(),
                 'scale'		=>	$Column->getScale(),
-                'precision' =>	$Column->getPrecision()
+                'precision' =>	$Column->getPrecision(),
+                'notNull'   =>  $Column->getNotnull()
             ];
 
             if ( is_array($Model->field) ) {
@@ -238,6 +239,9 @@ class ModelController extends Controller
                 case 'text':
                     $HTML .= view('form.textarea', compact('Field', 'Model'))->render();
                     break;
+                case 'number':
+                    $HTML .= view('form.number', compact('Field', 'Model'))->render();
+                    break;
                 case 'decimal':
                     $HTML .= view('form.decimal', compact('Field', 'Model'))->render();
                     break;
@@ -274,7 +278,6 @@ class ModelController extends Controller
 
                     $Value->{$Field->name} = number_format( $Value->{$Field->name}, $Field->scale, ',', '.');
                     break;
-
                 case 'pics':
 
                     if ($Type == 'save') continue;

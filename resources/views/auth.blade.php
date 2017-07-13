@@ -18,19 +18,22 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/lib/jquery.gritter/css/jquery.gritter.css"/>
     <link type="text/css" href="/css/style.css" rel="stylesheet">
     <link type="text/css" href="/css/custom.css" rel="stylesheet">
+
+    <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
 </head>
 
 <body class="am-splash-screen">
 
     @yield('content')
 
-    <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
     <script src="/lib/jquery.nanoscroller/javascripts/jquery.nanoscroller.min.js" type="text/javascript"></script>
     <script src="/js/main.js" type="text/javascript"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="/lib/theme-switcher/theme-switcher.min.js" type="text/javascript"></script>
+    <script src="/lib/jquery.gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         //initialize the javascript

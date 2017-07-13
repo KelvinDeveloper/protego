@@ -9,7 +9,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading"><img src="/img/logo-full-retina.png" alt="logo" width="150px" height="39px" class="logo-img"><span>Insira suas informações de usuário.</span></div>
 						<div class="panel-body">
-							<form role="form" method="POST" action="{{ route('login') }}" class="form-horizontal">
+							<form role="form" method="POST" action="{{ route('login') }}" class="form-horizontal" id="login">
 									{{ csrf_field() }}
 								<div class="login-form">
 									<div class="form-group">
@@ -44,4 +44,36 @@
 			</div>
 		</div>
 	</div>
+	<script>
+	$('form#login').submit(function (e) {
+
+      	e.stopPropagation();
+
+      	var $Data = new FormData(this);
+
+      	$.ajax({
+		  url: '/login',
+		  type: 'POST',
+		  dataType: 'json',
+          contentType: false,
+          processData: false,
+		  data: $Data,
+		  success: function (json) {
+
+            window.location.href = '/home';
+		  },
+          error: function (request, status, error) {
+
+            $.each(request.responseJSON, function (field, message) {
+              $.gritter.add({
+                title:"Ooops!",
+                text:message,
+                class_name:"color danger"
+              })
+			});
+		  }
+		});
+	  	return false;
+	});
+	</script>
 @endsection

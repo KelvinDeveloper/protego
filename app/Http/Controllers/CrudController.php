@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Response;
 
 class CrudController extends Controller
 {
@@ -15,6 +16,29 @@ class CrudController extends Controller
     public function __construct()
     {
         $this->ModelController = new ModelController();
+    }
+
+    /**
+     * Valid request for save
+     * */
+    public function validation(array $request, $Model)
+    {
+        $Validate  = [];
+        $Attributes = [];
+
+        foreach ($Model->field as $Field) {
+
+            if ( $Field->notNull ) {
+
+                $Validate[ $Field->name ] = 'required';
+                $Attributes[ $Field->name ] = $Field->label;
+            }
+        }
+
+        $Validator = Validator::make($request, $Validate);
+        $Validator->setAttributeNames($Attributes);
+
+        return $Validator;
     }
 
     /**
@@ -33,13 +57,19 @@ class CrudController extends Controller
         }
 
         $Post = $this->formatData($request->all(), $ModelDefault, $id);
+        $Validator = $this->validation($Post, $ModelDefault);
+
+        if ( $Validator->fails() ) {
+
+            return Response::json($Validator->errors(), 500);
+        }
 
         $Value->fill( $Post );
         $Value->save();
 
         $this->afterSave($request, $ModelDefault, $Value, $id );
 
-        return redirect('/' . str_plural($Model->getTable()));
+        return ['status' => true, 'redirect' => '/' . str_plural($Model->getTable())];
     }
 
     /**
@@ -90,7 +120,7 @@ class CrudController extends Controller
 
         foreach ($Model->field as $Field) {
 
-            if (! isset( $request[$Field->name] ) && $request[$Field->name] !== null ) continue;
+            if (! isset( $request[$Field->name] ) || isset( $request[$Field->name] ) && $request[$Field->name] == null ) continue;
 
             switch ($Field->type) {
 

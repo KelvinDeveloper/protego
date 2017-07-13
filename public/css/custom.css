@@ -86,3 +86,7 @@ i.right {
   text-align: center;
   font-size: 16px;
 }
+
+.error {
+  border-right: solid 2px #e74c3c !important;
+}

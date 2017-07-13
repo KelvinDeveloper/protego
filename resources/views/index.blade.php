@@ -24,6 +24,7 @@
         <link type="text/css" href="/css/themes/theme-google.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/lib/sweetalert/dist/sweetalert.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="/lib/jquery.gritter/css/jquery.gritter.css"/>
 	</head>
 	<body>
 
@@ -100,6 +101,7 @@
         <script src="/lib/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="/lib/countup/countUp.min.js" type="text/javascript"></script>
         <script src="/lib/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/lib/jquery.gritter/js/jquery.gritter.js" type="text/javascript"></script>
         <script type="text/javascript">
           $(document).ready(function(){
             //initialize the javascript

@@ -9,7 +9,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><img src="/img/logo-full-retina.png" alt="logo" width="150px" height="39px" class="logo-img"><span>Digite as informações do usuário.</span></div>
                         <div class="panel-body">
-                            <form role="form" method="POST" action="{{ route('register') }}" class="form-horizontal">
+                            <form role="form" method="POST" action="{{ route('register') }}" class="form-horizontal" id="register">
                                     {{ csrf_field() }}
                                 <!--div class="title"><span>Sign up with</span></div-->
                                 <div class="sign-up-form">
@@ -66,4 +66,35 @@
             </div>
         </div>
     </div>
+    <script>
+      $('form#register').submit(function (e) {
+
+        e.stopPropagation();
+
+        var $Data = new FormData(this);
+
+        $.ajax({
+          url: '/register',
+          type: 'POST',
+          dataType: 'json',
+          data: $Data,
+          success: function (response) {
+
+             window.location.href = '/home';
+          },
+          error: function (request, status, error) {
+
+            $.each(request.responseJSON, function (field, message) {
+
+              $.gritter.add({
+                title:"Ooops!",
+                text:message,
+                class_name:"color danger"
+              })
+            });
+          }
+        });
+        return false;
+      });
+    </script>
 @endsection

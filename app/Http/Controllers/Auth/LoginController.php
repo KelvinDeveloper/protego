@@ -42,6 +42,7 @@ class LoginController extends Controller
 
     protected function authenticated()
     {
-        return Session::put('work_group', WorkGroup::where('user_id', Auth::user()->id )->first() );
+        Session::put('work_group', WorkGroup::where('user_id', Auth::user()->id )->first() );
+        return ['status', true];
     }
 }
