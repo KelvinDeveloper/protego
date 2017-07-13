@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 
         // appending custom middleware
-        'App\Http\Middleware\HttpsProtocol',
+        \App\Http\Middleware\HttpsProtocol::class,
     ];
 
     /**
