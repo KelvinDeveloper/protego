@@ -38,12 +38,10 @@ $('.delete').click(function () {
 
 $(document).ready(function() {
 
-    setTimeout(function () {
-      $('.lightSlider').lightSlider({
-        autoWidth: 100,
-        slideMove: 1,
-        thumbItem:1
-      });
-    }, 500)
+  $('.lightSlider').lightSlider({
+    autoWidth: 100,
+    slideMove: 1,
+    thumbItem:1
+  });
 });
 </script>

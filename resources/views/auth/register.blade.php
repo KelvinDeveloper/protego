@@ -1,4 +1,5 @@
 @extends('auth')
+@section('title', 'Registrar | ')
 
 @section('content')
     <div class="am-wrapper am-login am-signup">
