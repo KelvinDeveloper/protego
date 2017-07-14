@@ -11,7 +11,6 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    // public $access = ['api', 'form'];
     public $title = 'Usuário';
 
     /**
@@ -71,17 +70,36 @@ class User extends Authenticatable
         'url'       =>  '/user'
     ];
 
-    public function gridCustomWhere ($Model) {
+    public function gridCustomWhere ($Model)
+    {
 
-        $Users = WorkGroupUser::select(['user_id'])->where('work_group_id', Session::get('work_group')->id)->get();
+        $Users = WorkGroupUser::select(['user_id'])
+            ->where('work_group_id', Session::get('work_group')->id)
+            ->where('id', '!=', Auth::user()->id)
+            ->where('id', '!=', Session::get('work_group')->user_id);
 
         $Array = [];
 
-        foreach ($Users as $User) {
+        foreach ($Users->get() as $User) {
             $Array[] = $User->user_id;
         }
 
          return $Model->whereIn('id', $Array);
     }
 
+    public function afterSave ($request, $ModelDefault, $Value, $id)
+    {
+        if ( $id == 'new' ) {
+
+            $WorkGroup                  = new WorkGroupUser;
+
+            $WorkGroup->work_group_id   = Session::get('work_group')->id;
+            $WorkGroup->user_id         = $Value->id;
+            $WorkGroup->recording       = 1;
+
+            $WorkGroup->save();
+        }
+
+        return true;
+    }
 }

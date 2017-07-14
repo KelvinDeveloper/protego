@@ -72,10 +72,10 @@
                                 'name'  =>  'Vitrine virtual',
                                 'href'  =>  '/showcase'
                             ],
-                            2   =>  [
-                                'name'  =>  'Metodos de pagamento',
-                                'href'  =>  '/payment'
-                            ],
+                            // 2   =>  [
+                            //    'name'  =>  'Metodos de pagamento',
+                            //    'href'  =>  '/payment'
+                            //],
                             3   =>  [
                                 'name'  =>  'Usuários',
                                 'href'  =>  '/users'

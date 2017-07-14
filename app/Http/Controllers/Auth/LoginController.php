@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\WorkGroup;
+use App\WorkGroupUser;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -42,7 +43,9 @@ class LoginController extends Controller
 
     protected function authenticated()
     {
-        Session::put('work_group', WorkGroup::where('user_id', Auth::user()->id )->first() );
+        $WorkGroup = WorkGroupUser::where('user_id', Auth::user()->id )->where('recording', 1)->first();
+        Session::put('work_group', WorkGroup::find($WorkGroup->work_group_id) );
+
         return ['status', true];
     }
 }

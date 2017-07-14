@@ -21,7 +21,7 @@ class CrudController extends Controller
     /**
      * Valid request for save
      * */
-    public function validation(array $request, $Model)
+    public function validation(array $request, $Model, $id)
     {
         $Validate  = [];
         $Attributes = [];
@@ -29,6 +29,8 @@ class CrudController extends Controller
         foreach ($Model->field as $Field) {
 
             if ( $Field->notNull ) {
+
+                if ( $Field->type == 'password' && $id ) continue;
 
                 $Validate[ $Field->name ] = 'required';
                 $Attributes[ $Field->name ] = $Field->label;
@@ -53,11 +55,15 @@ class CrudController extends Controller
         if (! $Value->id) {
 
             $Value = $Model;
-            $Value->work_group_id = Session::get('work_group')->id;
+
+            if ( in_array('work_group_id', $Model->hidden) ) {
+
+                $ObjValues = $Model->where('work_group_id', Session::get('work_group')->id);
+            }
         }
 
         $Post = $this->formatData($request->all(), $ModelDefault, $id);
-        $Validator = $this->validation($Post, $ModelDefault);
+        $Validator = $this->validation($Post, $ModelDefault, $id);
 
         if ( $Validator->fails() ) {
 
@@ -67,7 +73,15 @@ class CrudController extends Controller
         $Value->fill( $Post );
         $Value->save();
 
-        $this->afterSave($request, $ModelDefault, $Value, $id );
+        $this->afterSave($request, $ModelDefault, $Value, $id);
+
+        if ( method_exists( $Model, 'afterSave' ) ) {
+
+            if ( $Model->afterSave($request, $ModelDefault, $Value, $id) !== true ) {
+
+                return $Model->afterSave($request, $ModelDefault, $Value, $id);
+            }
+        }
 
         return ['status' => true, 'redirect' => '/' . str_plural($Model->getTable())];
     }
@@ -117,10 +131,11 @@ class CrudController extends Controller
      * */
     public function formatData($request, $Model, $id)
     {
+        $request = array_filter($request);
 
         foreach ($Model->field as $Field) {
 
-            if (! isset( $request[$Field->name] ) || isset( $request[$Field->name] ) && $request[$Field->name] == null ) continue;
+            if (! isset( $request[$Field->name] ) ) continue;
 
             switch ($Field->type) {
 
@@ -131,6 +146,11 @@ class CrudController extends Controller
 
                 case 'password':
 
+                    if (! isset( $request[$Field->name . '_current'] )) {
+
+                        $request[$Field->name . '_current'] = 'new';
+                    }
+
                     /**
                      * Case all variables ! empty
                      * */
@@ -140,12 +160,12 @@ class CrudController extends Controller
                          * Case current password == Auth::user()->password
                          * */
                         $Validator = Validator::make($request, [
-                            'password' => 'required|min:3|confirmed'
+                            'password' => 'required|min:6|confirmed'
                         ]);
 
                         if (! $Validator->fails()) {
 
-                            if ( Hash::check($request[$Field->name . '_current'], Auth::user()->password) ) {
+                            if ( Hash::check($request[$Field->name . '_current'], Auth::user()->password) || ! is_numeric($id) ) {
 
                                 $request[$Field->name] = bcrypt($request[$Field->name]);
                                 unset( $request[$Field->name . '_confirmation'], $request[$Field->name . '_current'] );

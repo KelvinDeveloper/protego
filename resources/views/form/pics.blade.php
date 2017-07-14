@@ -85,11 +85,14 @@
 
   $('document').ready(function () {
 
-    var $List = $('#list-items-{{ $Field->name }}');
+    @if ( $Field->multi == 'false' )
 
-    if ( $List.find('li').length > 1 ) {
+        var $List = $('#list-items-{{ $Field->name }}');
 
-      $List.find('li.upload-file').hide();
-    }
+        if ( $List.find('li').length > 1 ) {
+
+          $List.find('li.upload-file').hide();
+        }
+    @endif
   });
 </script>

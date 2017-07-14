@@ -197,7 +197,8 @@ class ModelController extends Controller
             $Value = $Model->formCustomWhere( $Model );
         } else {
             /* Default */
-            $Value->where('id', $id);
+            $Value = $Value->where('id', $id);
+
         }
 
         $Value = $Value->first();
@@ -246,7 +247,7 @@ class ModelController extends Controller
                     $HTML .= view('form.decimal', compact('Field', 'Model'))->render();
                     break;
                 case 'password':
-                    $HTML .= view('form.password', compact('Field', 'Model'))->render();
+                    $HTML .= view('form.password', compact('Field', 'Model', 'Value'))->render();
                     break;
                 case 'select':
                     $HTML .= view('form.select', compact('Field', 'Model'))->render();
@@ -270,7 +271,7 @@ class ModelController extends Controller
     {
         foreach ($Model->field as $Field) {
 
-            if (! isset( $Value->{$Field->name} ) ) continue;
+            if (! isset( $Value->{$Field->name} ) && $Type != 'grid' ) continue;
 
             switch ($Field->type) {
 
