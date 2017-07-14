@@ -301,6 +301,13 @@ class ModelController extends Controller
                         $Value->{$Field->name} = view('grid.image', Compact('Path', 'Field', 'Value', 'Location'))->render();
                     }
                     break;
+                case 'select':
+                    if ( $Type != 'grid' ) continue;
+                    if ( isset( $Field->options[$Value->{$Field->name}] ) ) {
+
+                        $Value->{$Field->name} = $Field->options[$Value->{$Field->name}];
+                    }
+                    break;
             }
         }
 
