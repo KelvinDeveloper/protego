@@ -20,6 +20,16 @@ Route::get('/terms-and-conditions', function () {
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('test-email', function () {
+
+        $Mail = new \App\Http\Controllers\MailController();
+        $Mail->Send([
+            'Title' => 'Test Email',
+            'To'    => 'protego@kelvinsouza.com',
+        ], 'test-email');
+        dd($Mail);
+    });
+
     Route::get('/', 'HomeController@index');
     Route::get('/home', 'HomeController@index');
 
