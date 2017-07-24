@@ -34,6 +34,7 @@
 </div>
 
 <script>
+    <?php $timestamp = time();?>
   $('button[name="{{ $Field->name }}"]').uploadifive({
     auto: {{ $Field->auto }},
     uploadScript: '/{{ str_singular($Model->getTable()) }}/{{ $Value->id ?: 'new' }}/file/upload',
@@ -45,6 +46,8 @@
     height: 150,
     multi: {{ $Field->multi }},
     formData: {
+      timestamp: '{{ $timestamp }}',
+      token: '{{ md5('unique_salt' . $timestamp) }}',
       _token: '{{ csrf_token() }}',
       name: '{{ $Field->name }}',
       hash: '{{ $Model->hash }}'

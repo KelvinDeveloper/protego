@@ -7,20 +7,24 @@
     <title>@yield('title') Protego</title>
     <!-- Favicon-->
     <link rel="shortcut icon" href="/favicon.png" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-
-    <link rel="stylesheet" type="text/css" href="/lib/stroke-7/style.css"/>
     <link rel="stylesheet" type="text/css" href="/lib/jquery.nanoscroller/css/nanoscroller.css"/><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
+    <script src="/lib/jquery.moneymask/jquery.moneymask-min.js" type="text/javascript"></script>
+    <script src="/lib/jquery.uploadifive/jquery.uploadifive.min.js" type="text/javascript"></script>
+    <script src="/lib/lightslider/src/js/lightslider.js" type="text/javascript"></script>
+
+    <link type="text/css" rel="stylesheet" href="/lib/lightslider/src/css/lightslider.css" />
     <link rel="stylesheet" type="text/css" href="/lib/theme-switcher/theme-switcher.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/lib/jquery.gritter/css/jquery.gritter.css"/>
     <link type="text/css" href="/css/style.css" rel="stylesheet">
     <link type="text/css" href="/css/custom.css" rel="stylesheet">
+    <link type="text/css" href="/css/themes/theme-google.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/lib/sweetalert/dist/sweetalert.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/lib/jquery.gritter/css/jquery.gritter.css"/>
+    <link rel="stylesheet" type="text/css" href="/lib/stroke-7/style.css"/>
 
     <script src="/lib/jquery/jquery.min.js" type="text/javascript"></script>
 </head>

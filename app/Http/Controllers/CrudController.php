@@ -58,7 +58,7 @@ class CrudController extends Controller
 
             if ( in_array('work_group_id', $Model->hidden) ) {
 
-                $ObjValues = $Model->where('work_group_id', Session::get('work_group')->id);
+                $Value->work_group_id = Session::get('work_group')->id;
             }
         }
 

@@ -25,6 +25,7 @@
         <link rel="stylesheet" type="text/css" href="/lib/sweetalert/dist/sweetalert.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="/lib/jquery.gritter/css/jquery.gritter.css"/>
+        <link rel="stylesheet" type="text/css" href="/lib/stroke-7/style.css"/>
 	</head>
 	<body>
 
