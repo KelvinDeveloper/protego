@@ -62,7 +62,7 @@ class CrudController extends Controller
             }
         }
 
-        $Post = $this->formatData($request->all(), $ModelDefault, $id);
+        $Post      = $this->formatData($request->all(), $ModelDefault, $id);
         $Validator = $this->validation($Post, $ModelDefault, $id);
 
         if ( $Validator->fails() ) {
@@ -131,7 +131,7 @@ class CrudController extends Controller
      * */
     public function formatData($request, $Model, $id)
     {
-        $request = array_filter($request);
+        // $request = array_filter($request);
 
         foreach ($Model->field as $Field) {
 
