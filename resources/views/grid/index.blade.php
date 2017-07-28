@@ -11,7 +11,7 @@
                     {!! view('grid.body', compact('Model', 'Table', 'Values'))->render() !!}
                     {!! view('grid.footer')->render() !!}
                 </table>
-                {!! view('grid.pagination')->render() !!}
+                {!! view('grid.pagination', compact('Model'))->render() !!}
             </div>
         </div>
     </div>

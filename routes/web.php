@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
         $Mail = new \App\Http\Controllers\MailController();
         $Mail->Send([
             'Title' => 'Test Email',
-            'To'    => 'protego@kelvinsouza.com',
+            'To'    => 'kelvin.developer@icloud.com',
         ], 'test-email');
         dd($Mail);
     });

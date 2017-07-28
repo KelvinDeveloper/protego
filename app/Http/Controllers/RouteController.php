@@ -22,6 +22,12 @@ class RouteController extends Controller
     {
         $Model  = $this->ModelController->getModel($Model, true);
 
+        if ($Model->paginate && is_numeric($Model->paginate)) {
+
+            $Model->setPerPage($Model->paginate);
+            $Model->paginate($Model->paginate);
+        }
+
         if (! in_array('grid', $Model->access) ) {
 
             return redirect('/' . str_singular( $Model->getTable() ) . '/form');

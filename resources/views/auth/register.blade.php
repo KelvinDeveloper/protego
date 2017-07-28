@@ -9,7 +9,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><img src="/img/logo-full-retina.png" alt="logo" width="150px" height="39px" class="logo-img"><span>Digite as informações do usuário.</span></div>
                         <div class="panel-body">
-                            <form role="form" method="POST" action="{{ route('register') }}" class="form-horizontal" id="register">
+                            <form method="POST" action="{{ route('register') }}" class="form-horizontal" id="register">
                                     {{ csrf_field() }}
                                 <!--div class="title"><span>Sign up with</span></div-->
                                 <div class="sign-up-form">
@@ -77,15 +77,16 @@
           url: '/register',
           type: 'POST',
           dataType: 'json',
+          contentType: false,
+          processData: false,
           data: $Data,
-          success: function (response) {
+          success: function (json) {
 
-             window.location.href = '/home';
+            window.location.href = '/home';
           },
           error: function (request, status, error) {
 
             $.each(request.responseJSON, function (field, message) {
-
               $.gritter.add({
                 title:"Ooops!",
                 text:message,

@@ -1,7 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: TBLManager
- * Date: 20/06/17
- * Time: 15:06
- */
+<div class="box-pagination">
+    {{ $Model->paginate() }}
+    <span class="total-records">{{ $Model->count() }} registro(s) encontrado(s)</span>
+</div>

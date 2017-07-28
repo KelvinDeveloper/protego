@@ -46,7 +46,8 @@ class ModelController extends Controller
             'hash'      =>  false,
             'access'    =>  ['api', 'form', 'grid'],
             'field'     =>  (object)[],
-            'hidden'    =>  []
+            'hidden'    =>  [],
+            'paginate'  =>  10
         ];
 
         $TotalColumns = 0;
@@ -167,6 +168,11 @@ class ModelController extends Controller
         if ( method_exists( $Model, 'gridCustomWhere' ) ) {
 
             $ObjValues = $Model->gridCustomWhere($Model);
+        }
+
+        if ($Model->paginate && is_numeric($Model->paginate)) {
+
+            $ObjValues->paginate($Model->paginate);
         }
 
         foreach ( $ObjValues->orderBy('id', 'DESC')->get() as $Value ) {

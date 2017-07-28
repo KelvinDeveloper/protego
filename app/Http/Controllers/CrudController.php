@@ -230,6 +230,10 @@ class CrudController extends Controller
 
             $Field->path = public_path('/img/') . "{$Field->path}{$id}/";
         }
+
+        (new FolderController())->create($Field->path);
+        chmod($Field->path, 0777);
+
         $File->move( $Field->path, $File->getClientOriginalName() );
 
         if ( is_array( $Field->resize ) ) {
@@ -239,6 +243,7 @@ class CrudController extends Controller
                 $Info = pathinfo($File->getClientOriginalName());
 
                 (new FolderController())->create("{$Field->path}thumb");
+                chmod("{$Field->path}thumb", 0777);
 
                 $Object = \Image::make("{$Field->path}{$File->getClientOriginalName()}");
                 $Object->resize($Size[0], $Size[1], function ($constraint) {
