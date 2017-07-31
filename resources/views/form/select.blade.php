@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="col-sm-3 control-label">{{ $Field->label }}</label>
+    <label class="col-sm-3 control-label">{!! $Field->label !!}</label>
     <div class="col-sm-6">
         <select name="{{ $Field->name }}" class="form-control">
             <option>Selecione</option>

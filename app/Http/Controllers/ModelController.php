@@ -18,6 +18,17 @@ class ModelController extends Controller
     {
         $Model = ucfirst( strtolower( str_singular( $Model ) ) );
 
+        if ( strstr($Model, '_', $Model) ) {
+
+            $_Model = '';
+            foreach (explode('_', $Model) as $Item) {
+
+                $_Model .= ucfirst($Item);
+            }
+
+            $Model = $_Model;
+        }
+
         if (! file_exists( app_path() . "/{$Model}.php" ) ) {
 
             abort(404);
@@ -177,6 +188,8 @@ class ModelController extends Controller
 
         foreach ( $ObjValues->orderBy('id', 'DESC')->get() as $Value ) {
 
+            unset($Value->title);
+
             $Values[] = $this->formatData($Value, $Model, 'grid');
         }
 
@@ -208,6 +221,8 @@ class ModelController extends Controller
         }
 
         $Value = $Value->first();
+
+        unset($Value->title);
 
         if (! $Value ) {
 

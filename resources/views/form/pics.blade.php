@@ -1,7 +1,7 @@
 <?php $Path = $Value->id ? "/img{$Field->path}{$Value->id}/" : "/tmp{$Field->path}{$Model->hash}/"; ?>
 
 <div class="form-group">
-    <label class="col-sm-3 control-label">{{ $Field->label }}</label>
+    <label class="col-sm-3 control-label">{!! $Field->label !!}</label>
     <div class="clearfix col-sm-9">
 
         @if ( $Field->multi == 'false' )
