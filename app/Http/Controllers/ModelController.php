@@ -16,7 +16,10 @@ class ModelController extends Controller
      */
     public function getModel ($Model, $setDefault = false)
     {
-        $Model = ucfirst( strtolower( str_singular( $Model ) ) );
+        $Model = str_singular($Model);
+
+        $Model = snake_case($Model);
+        $Model = camel_case($Model);
 
         if ( strstr($Model, '_', $Model) ) {
 
