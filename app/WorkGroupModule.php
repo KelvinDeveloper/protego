@@ -10,13 +10,17 @@ class WorkGroupModule extends Model
 
     public $hidden = ['id', 'created_at', 'updated_at'];
 
+    public $title = 'Group de Trabalho - Modulos';
+
     public $field = [
         'module_id'    =>  [
-            'type'  =>  'select',
+            'label'     =>  'Modulo',
+            'type'      =>  'select',
             'options'   =>  []
         ],
         'work_group_id'    =>  [
-            'type'  =>  'select',
+            'label'     =>  'Grupo de Trabalho',
+            'type'      =>  'select',
             'options'   =>  []
         ],
     ];

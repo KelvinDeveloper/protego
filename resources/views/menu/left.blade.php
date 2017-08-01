@@ -4,7 +4,7 @@
 		<ul class="sidebar-elements">
 			@foreach( $Menu as $Group )
 			<li class="parent">
-				<a href="#"><i class="material-icons">{{ $Group['icon'] }}</i> </i><span>{{ $Group['name']}}</span></a>
+				<a href="#">{!! $Group['icon'] !!} </i><span>{{ $Group['name']}}</span></a>
 				<ul class="sub-menu"><li class="title">{{ $Group['name']}}</li>
 					<li class="nav-items">
 						<div class="am-scroller nano has-scrollbar">

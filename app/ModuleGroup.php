@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModuleGroup extends Model
 {
-    protected $fillable = ['status', 'title', 'icon', 'description', 'price', 'group', 'position'];
+    protected $fillable = ['id', 'status', 'title', 'icon', 'description', 'price', 'group', 'position'];
 
     public $hidden = ['id', 'created_at', 'updated_at'];
 
-    public $title = 'Modulo';
+    public $title = 'Agrupar Modulo';
 
     public $field = [
         'status'    =>  [

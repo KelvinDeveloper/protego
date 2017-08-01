@@ -30,61 +30,8 @@
 	<body>
 
         <div class="am-wrapper">
-            @include('menu.top')
-
-            @include('menu.left', ['Menu' => [
-                    0	=>	[
-                        'name'	=>	'Produtos',
-                        'icon'  =>  'layers',
-                        'items' =>  [
-                            0   =>  [
-                                'name'  =>  'Todos os produtos',
-                                'href'	=>	'/products'
-                            ],
-                            1   =>  [
-                                'name'  =>  'Novo produto',
-                                'href'	=>	'/product/new'
-                            ]
-                        ]
-                    ],
-                    1	=>	[
-                        'name'	=>	'Clientes',
-                        'icon'  =>  'group',
-                        'items' =>  [
-                            0   =>  [
-                                'name'  =>  'Todos os clientes',
-                                'href'	=>	'/client'
-                            ],
-                            1   =>  [
-                                'name'  =>  'Novo cliente',
-                                'href'	=>	'/client/new'
-                            ]
-                        ]
-                    ],
-                    2   =>  [
-                        'name'  =>  'Configurações',
-                        'icon'  =>  'settings',
-                        'items' =>  [
-                            0   =>  [
-                                'name'  =>  'Loja',
-                                'href'  =>  '/store'
-                            ],
-                            1   =>  [
-                                'name'  =>  'Vitrine virtual',
-                                'href'  =>  '/showcase'
-                            ],
-                            // 2   =>  [
-                            //    'name'  =>  'Metodos de pagamento',
-                            //    'href'  =>  '/payment'
-                            //],
-                            3   =>  [
-                                'name'  =>  'Usuários',
-                                'href'  =>  '/users'
-                            ]
-                        ]
-                    ]
-                ]])
-
+            {!! Menu::top() !!}
+            {!! Menu::left() !!}
 			<div class="am-content" id="load-content">
 				@yield('content')
 			</div>

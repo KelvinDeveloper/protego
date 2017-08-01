@@ -6,8 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkGroup extends Model
 {
-
-    protected  $table = 'work_group';
-
     protected $fillable = ['name', 'user_id'];
+
+    public $hidden = ['id', 'created_at', 'updated_at'];
+
+    public $title = 'Grupo de Trabalho';
+
+    public $field = [
+        'name'    =>  [
+            'label'     =>  'Nome',
+        ],
+        'user_id'    =>  [
+            'label'     =>  'Administrador',
+            'type'      =>  'select',
+            'options'   =>  []
+        ],
+    ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $Query = User::select(['id', 'name'])->get();
+
+        foreach ($Query as $User) {
+
+            $this->field['user_id']['options'][$User->id] = $User->name;
+        }
+    }
 }

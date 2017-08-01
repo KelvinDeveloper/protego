@@ -1,5 +1,5 @@
 <script>
-  $('form#form-{{ str_plural($Model->getTable()) }}').submit(function (e) {
+  $('form#form-{{ str_singular($Model->getTable()) }}').submit(function (e) {
 
     e.stopPropagation();
 
@@ -36,11 +36,11 @@
 
   $(document).ready(function () {
 
-    $('form#form-{{ str_plural($Model->getTable()) }}').find('input, textarea').blur(function () {
+    $('form#form-{{ str_singular($Model->getTable()) }}').find('input, textarea').blur(function () {
       $(this).removeClass('error');
     });
 
-    $('form#form-{{ str_plural($Model->getTable()) }}').find('select').change(function () {
+    $('form#form-{{ str_singular($Model->getTable()) }}').find('select').change(function () {
       $(this).removeClass('error');
     });
   });

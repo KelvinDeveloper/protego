@@ -181,9 +181,10 @@ return [
         /*
         * My Providers
         */
-        App\Providers\FormServiceProvider::class,
-        App\Providers\ElementServiceProvider::class,
-        App\Providers\MagicServiceProvider::class,
+//        App\Providers\FormServiceProvider::class,
+//        App\Providers\ElementServiceProvider::class,
+//        App\Providers\MagicServiceProvider::class,
+        App\Providers\MenuServiceProvider::class,
 
         /*
          * Providers vendor
@@ -241,8 +242,9 @@ return [
         /*
         * My Facades
         */
-        'Element' => App\Facades\Element::class,
-        'Magic' => App\Facades\Magic::class,
+//        'Element' => App\Facades\Element::class,
+//        'Magic' => App\Facades\Magic::class,
+        'Menu'  =>  App\Facades\Menu::class,
 
         /*
          * Aliases vendor

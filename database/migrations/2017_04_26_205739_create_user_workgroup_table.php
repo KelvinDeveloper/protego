@@ -13,7 +13,7 @@ class CreateUserWorkgroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_work_group', function (Blueprint $table) {
+        Schema::create('work_group_users', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('work_group_id');
             $table->tinyInteger('user_id');
@@ -29,6 +29,6 @@ class CreateUserWorkgroupTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_work_group');
+        Schema::dropIfExists('work_group_users');
     }
 }
