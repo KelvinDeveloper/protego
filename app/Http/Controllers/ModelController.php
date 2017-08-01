@@ -19,7 +19,7 @@ class ModelController extends Controller
         $Model = str_singular($Model);
 
         $Model = snake_case($Model);
-        $Model = camel_case($Model);
+        $Model = ucfirst( camel_case($Model) );
 
         if ( strstr($Model, '_', $Model) ) {
 
