@@ -30,6 +30,12 @@ class Install extends Command
         4 =>    [
             'title'     =>  'Administração',
             'icon'      =>  '<i class="material-icons">build</i>',
+            'position'  =>  99
+        ],
+
+        5 => [
+            'title'     =>  'Sites',
+            'icon'      =>  '<i class="material-icons">important_devices</i>',
             'position'  =>  3
         ]
     ];
@@ -64,7 +70,25 @@ class Install extends Command
         ],
         'WorkGroupUser' =>  [
             'group' =>  4
-        ]
+        ],
+        'Website'   =>  [
+            'group' =>  5
+        ],
+        'WebsiteMenu'   =>  [
+            'group' =>  5
+        ],
+        'WebsiteAbout'   =>  [
+            'group' =>  5
+        ],
+        'WebsiteService'   =>  [
+            'group' =>  5
+        ],
+        'WebsitePortfolio'   =>  [
+            'group' =>  5
+        ],
+        'WebsiteContact'   =>  [
+            'group' =>  5
+        ],
     ];
 
     /**

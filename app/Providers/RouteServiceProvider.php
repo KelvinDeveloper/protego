@@ -37,7 +37,23 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $this->mapWebRoutes();
+        $subdomain = isset($_SERVER['HTTP_HOST']) ? explode('.', $_SERVER['HTTP_HOST'] ) : false;
+
+        if (!$subdomain || count($subdomain) < 2) {
+
+            $subdomain = false;
+        } else {
+
+            $subdomain = array_shift($subdomain);
+        }
+
+        if ( ! $subdomain || $subdomain == 'protego' ) {
+
+            $this->mapWebRoutes();
+        } else {
+
+            $this->mapWebsiteRoutes();
+        }
 
         //
     }
@@ -51,9 +67,25 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
+
         Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the "website" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapWebsiteRoutes()
+    {
+
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/website.php'));
     }
 
     /**

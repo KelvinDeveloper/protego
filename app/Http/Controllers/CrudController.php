@@ -83,7 +83,7 @@ class CrudController extends Controller
             }
         }
 
-        return ['status' => true, 'redirect' => '/' . str_plural($Model->getTable())];
+        return ['status' => true, 'redirect' => '/' . str_singular($Model->getTable())];
     }
 
     /**
