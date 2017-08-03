@@ -21,7 +21,7 @@ class CreateTableMenus extends Migration
             $table->string('href');
             $table->string('target');
             $table->integer('position')->default(0);
-            $table->integer('website_id')->unique();
+            $table->integer('website_id');
             $table->integer('work_group_id');
 
             $table->timestamps();

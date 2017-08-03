@@ -18,9 +18,9 @@ class CreateTableServices extends Migration
 
             $table->integer('status');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('icon');
-            $table->integer('website_id')->unique();
+            $table->integer('website_id');
             $table->integer('work_group_id');
 
             $table->timestamps();

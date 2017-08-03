@@ -22,6 +22,8 @@ class WebsiteRouteController extends Controller
         $account = $request->route()->parameter('account');
         $this->Website = Website::where('domain', $account)->orWhere('subdomain', $account)->first();
 
+        unset( $this->Website->title );
+
         $WorkGroup = WorkGroupUser::where('id', $this->Website->id )->first();
         Session::put('work_group', WorkGroup::find($WorkGroup->work_group_id) );
     }
@@ -31,11 +33,13 @@ class WebsiteRouteController extends Controller
         $Website = $this->Website;
 
         $Menu       = WebsiteMenu::where('website_id', $Website->id)->where('status', 1)->get();
-        $About      = WebsiteAbout::where('website_id', $Website->id)->where('status', 1)->get();
-        $Service    = WebsiteService::where('website_id', $Website->id)->where('status', 1)->get();
-        $Portfolio  = WebsitePortfolio::where('website_id', $Website->id)->where('status', 1)->get();
-        $Contact    = WebsiteContact::where('website_id', $Website->id)->where('status', 1)->get();
+        $About      = WebsiteAbout::where('website_id', $Website->id)->where('status', 1)->first();
+        $Services   = WebsiteService::where('website_id', $Website->id)->where('status', 1)->get();
+        $Portfolios = WebsitePortfolio::where('website_id', $Website->id)->where('status', 1)->get();
+        $Contact    = WebsiteContact::where('website_id', $Website->id)->where('status', 1)->first();
 
-        return view("website.templates.{$Website->template}.index", compact('Website', 'Menu', 'About', 'Service', 'Portfolio', 'Contact'));
+        unset( $About->title );
+
+        return view("website.templates.{$Website->template}.index", compact('Website', 'Menu', 'About', 'Services', 'Portfolios', 'Contact'));
     }
 }

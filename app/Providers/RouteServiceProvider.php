@@ -37,22 +37,22 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $subdomain = isset($_SERVER['HTTP_HOST']) ? explode('.', $_SERVER['HTTP_HOST'] ) : false;
+        $domain    = isset($_SERVER['HTTP_HOST']) ? explode('.', $_SERVER['HTTP_HOST'] ) : false;
+        $subdomain = false;
 
-        if (!$subdomain || count($subdomain) < 2) {
+        if (count($domain) > 1) {
 
-            $subdomain = false;
-        } else {
-
-            $subdomain = array_shift($subdomain);
+            $subdomain = true;
         }
 
-        if ( ! $subdomain || $subdomain == 'protego' ) {
+        $domain = array_shift($domain);
+
+        if ( ! $domain || $domain == 'protego' ) {
 
             $this->mapWebRoutes();
         } else {
 
-            $this->mapWebsiteRoutes();
+            $this->mapWebsiteRoutes($subdomain);
         }
 
         //
@@ -80,12 +80,20 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebsiteRoutes()
+    protected function mapWebsiteRoutes($subdomain)
     {
 
-        Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/website.php'));
+        if ( $subdomain ) {
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/website-subdomain.php'));
+        } else {
+
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/website-domain.php'));
+        }
     }
 
     /**

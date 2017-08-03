@@ -21,7 +21,7 @@ class CreateTablePortfolios extends Migration
             $table->string('pic')->nullable();
             $table->text('description')->nullable();
             $table->string('href')->nullable();
-            $table->integer('website_id')->unique();
+            $table->integer('website_id');
             $table->integer('work_group_id');
 
             $table->timestamps();

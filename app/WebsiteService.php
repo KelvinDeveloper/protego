@@ -28,7 +28,7 @@ class WebsiteService extends Model
             'label' =>  'Descrição',
         ],
         'icon'  =>  [
-            'label' =>  '<a href="https://material.io/icons/" target="_blank">Icone</a>',
+            'label' =>  '<a href="http://fontawesome.io/icons/" target="_blank">Icone</a>',
         ],
         'website_id'    =>  [
             'label'     =>  'Site',
