@@ -39,7 +39,7 @@ class Menu
 
                     $Menu[$Loop]['items'][] =  [
                         'name'  =>  'Todos os ' . str_singular($Model->title),
-                        'href'  =>  '/' . strtolower( str_plural($Model->getTable()) )
+                        'href'  =>  '/' . strtolower( str_singular($Model->getTable()) )
                     ];
                 } else {
                     $Menu[$Loop]['items'][] =  [
