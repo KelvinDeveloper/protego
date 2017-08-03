@@ -45,7 +45,10 @@ class RouteServiceProvider extends ServiceProvider
             $subdomain = true;
         }
 
-        $domain = array_shift($domain);
+        if ( is_array($domain) ) {
+
+            $domain = array_shift($domain);
+        }
 
         if ( ! $domain || $domain == 'protego' ) {
 
