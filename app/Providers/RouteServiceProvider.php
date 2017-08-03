@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
             $subdomain = true;
         }
 
-        if ( is_array($domain) ) {
+        if ($domain && is_array($domain) ) {
 
             $domain = array_shift($domain);
         }
