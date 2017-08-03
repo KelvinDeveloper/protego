@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $domain    = isset($_SERVER['HTTP_HOST']) ? explode('.', $_SERVER['HTTP_HOST'] ) : false;
         $subdomain = false;
 
-        if (count($domain) > 1) {
+        if (count($domain) > ( env('APP_ENV') == 'local' ? 1 : 2 )) {
 
             $subdomain = true;
         }
