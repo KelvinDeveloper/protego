@@ -37,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
-        $domain    = isset($_SERVER['HTTP_HOST']) ? explode('.', $_SERVER['HTTP_HOST'] ) : false;
+        $domain    = isset($_SERVER['HTTP_HOST']) ? explode('.', str_replace('www.', '', $_SERVER['HTTP_HOST']) ) : false;
         $subdomain = false;
 
         if (count($domain) > ( env('APP_ENV') == 'local' ? 1 : 2 )) {

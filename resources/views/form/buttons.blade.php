@@ -1,5 +1,5 @@
 <div class="text-right">
-    <a href="/{{ str_plural($Model->getTable()) }}" class="btn btn-space btn-default"><i class="material-icons left">close</i> Cancelar</a>
+    <a href="/{{ str_singular($Model->getTable()) }}" class="btn btn-space btn-default"><i class="material-icons left">close</i> Cancelar</a>
     <button type="submit" class="btn btn-space btn-primary"><i class="material-icons left">save</i> Salvar</button>
 </div>
 

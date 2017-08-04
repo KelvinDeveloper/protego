@@ -31,22 +31,10 @@ class Menu
                 unset($Module->title);
                 $Model = (new ModelController())->getModel($Module->title);
 
-                if (! isset($Model->access) || (isset($Model->access) && ( in_array('form', $Model->access) && in_array('grid', $Model->access) ) ) ) {
-                    $Menu[$Loop]['items'][] =  [
-                        'name'  =>  'Novo ' . str_singular($Model->title),
-                        'href'  =>  '/' . strtolower( str_singular($Model->getTable()) ) . '/new'
-                    ];
-
-                    $Menu[$Loop]['items'][] =  [
-                        'name'  =>  'Todos os ' . str_singular($Model->title),
-                        'href'  =>  '/' . strtolower( str_singular($Model->getTable()) )
-                    ];
-                } else {
-                    $Menu[$Loop]['items'][] =  [
-                        'name'  =>  str_singular($Model->title),
-                        'href'  =>  '/' . strtolower( str_singular($Model->getTable()) )
-                    ];
-                }
+                $Menu[$Loop]['items'][] =  [
+                    'name'  =>  str_singular($Model->title),
+                    'href'  =>  '/' . strtolower( str_singular($Model->getTable()) )
+                ];
             }
 
             $Loop++;
