@@ -11,6 +11,10 @@ class WebsitePage extends Model
 
     public $hidden = ['id', 'work_group_id', 'created_at', 'updated_at'];
 
+    public $gird = [
+        'hidden'    =>  ['content']
+    ];
+
     public $title = 'Páginas';
 
     public $field = [
