@@ -2,6 +2,11 @@
     <div class="container-fluid">
         <div class="row no-gutter popup-gallery">
 
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Portfólio</h2>
+                <hr class="primary">
+            </div>
+
             @foreach($Portfolios as $Portfolio)
                 <?php
                     unset($Portfolio->title);
