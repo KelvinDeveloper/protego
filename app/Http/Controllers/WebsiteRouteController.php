@@ -50,6 +50,8 @@ class WebsiteRouteController extends Controller
         $Portfolios = WebsitePortfolio::where('website_id', $this->Website->id)->where('status', 1)->get();
         $Contact    = WebsiteContact::where('website_id', $this->Website->id)->where('status', 1)->first();
 
+        unset( $About->title, $Page->title );
+
         $Contents = preg_split('/\n|\r\n?/', $Page->content);
 
         foreach ($Contents as $Content) {
