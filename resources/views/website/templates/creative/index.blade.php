@@ -36,11 +36,7 @@
 
 <body id="page-top">
 
-    @include('website.templates.creative.menu-top')
-    @include('website.templates.creative.header')
-    @include('website.templates.creative.services')
-    @include('website.templates.creative.portfolio')
-    @include('website.templates.creative.contact')
+    {!! $Build !!}
 
     <!-- jQuery -->
     <script src="/creative/vendor/jquery/jquery.min.js"></script>

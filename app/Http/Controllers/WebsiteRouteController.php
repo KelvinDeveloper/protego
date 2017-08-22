@@ -6,6 +6,7 @@ use App\Website;
 use App\WebsiteAbout;
 use App\WebsiteContact;
 use App\WebsiteMenu;
+use App\WebsitePage;
 use App\WebsitePortfolio;
 use App\WebsiteService;
 use App\WorkGroup;
@@ -28,18 +29,50 @@ class WebsiteRouteController extends Controller
         Session::put('work_group', WorkGroup::find($WorkGroup->work_group_id) );
     }
 
-    public function index () {
+    public function getPage ($Url) {
 
-        $Website = $this->Website;
+        $Page = WebsitePage::where('url', $Url)->where('website_id', $this->Website->id);
 
-        $Menu       = WebsiteMenu::where('website_id', $Website->id)->where('status', 1)->get();
-        $About      = WebsiteAbout::where('website_id', $Website->id)->where('status', 1)->first();
-        $Services   = WebsiteService::where('website_id', $Website->id)->where('status', 1)->get();
-        $Portfolios = WebsitePortfolio::where('website_id', $Website->id)->where('status', 1)->get();
-        $Contact    = WebsiteContact::where('website_id', $Website->id)->where('status', 1)->first();
+        return $Page->first();
+    }
 
-        unset( $About->title );
+    public function build (Request $request)
+    {
 
-        return view("website.templates.{$Website->template}.index", compact('Website', 'Menu', 'About', 'Services', 'Portfolios', 'Contact'));
+        $Url   = '/' . implode('/', $request->segments());
+        $Page  = $this->getPage($Url);
+        $Build = '';
+
+        $Website    = $this->Website;
+        $Menu       = WebsiteMenu::where('website_id', $this->Website->id)->where('status', 1)->get();
+        $About      = WebsiteAbout::where('website_id', $this->Website->id)->where('status', 1)->first();
+        $Services   = WebsiteService::where('website_id', $this->Website->id)->where('status', 1)->get();
+        $Portfolios = WebsitePortfolio::where('website_id', $this->Website->id)->where('status', 1)->get();
+        $Contact    = WebsiteContact::where('website_id', $this->Website->id)->where('status', 1)->first();
+
+        $Contents = preg_split('/\n|\r\n?/', $Page->content);
+
+        foreach ($Contents as $Content) {
+
+            $Json = json_decode( $Content );
+
+            if (! $Json) {
+
+                $Build .= $Content;
+                continue;
+            }
+
+            if (! is_object($Json)) continue;
+
+            try {
+
+                $Build .= view("website.templates.{$this->Website->template}.{$Json->require}", compact('Website','Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Json'))->render();
+            } catch (\Exception $e) {
+
+                $Build .= "Require {$Json->require} 404 <br>";
+            }
+        }
+
+        return view("website.templates.{$this->Website->template}.index", compact('Website', 'Build'))->render();
     }
 }

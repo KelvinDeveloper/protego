@@ -89,6 +89,9 @@ class Install extends Command
         'WebsiteContact'   =>  [
             'group' =>  5
         ],
+        'WebsitePage'   =>  [
+            'group' =>  5
+        ],
     ];
 
     /**
