@@ -36,6 +36,9 @@ class Website extends Model
             'type'  =>  'select',
             'options'   =>  []
         ],
+        'ga'    =>  [
+            'label' =>  'Chave Google Analytics'
+        ]
     ];
 
     public function __construct ()
