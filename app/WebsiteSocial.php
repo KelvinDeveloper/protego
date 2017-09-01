@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Session;
 
 class WebsiteSocial extends Model
 {
-    protected $fillable = ['facebook', 'twitter', 'google_plus', 'linkedin', 'instagram', 'dribbble', 'skype', 'website_id'];
+    protected $fillable = ['facebook', 'twitter', 'google_plus', 'linkedin', 'instagram', 'dribbble', 'skype', 'github', 'website_id'];
 
     public $hidden = ['id', 'work_group_id', 'created_at', 'updated_at'];
 

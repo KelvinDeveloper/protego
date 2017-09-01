@@ -12,6 +12,7 @@
                 {!! $Social->instagram ? '<li><a href="' . $Social->instagram . '" target="_blank"><i class="fa fa-instagram"></i></a></li>' : ''        !!}
                 {!! $Social->dribbble ? '<li><a href="' . $Social->dribbble . '" target="_blank"><i class="fa fa-dribbble"></i></a></li>' : ''          !!}
                 {!! $Social->skype ? '<li><a href="' . $Social->skype . '" target="_blank"><i class="fa fa-skype"></i></a></li>' : ''                !!}
+                {!! $Social->github ? '<li><a href="' . $Social->github . '" target="_blank"><i class="fa fa-github"></i></a></li>' : ''                !!}
             </ul>
 
             <ul class="copyright">
