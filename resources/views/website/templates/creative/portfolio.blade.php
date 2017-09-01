@@ -21,7 +21,7 @@
                                     {{ $Portfolio->title }}
                                 </div>
                                 <div class="project-name">
-                                    {{ $Portfolio->description }}
+                                    {!! $Portfolio->description !!}
                                 </div>
                             </div>
                         </div>

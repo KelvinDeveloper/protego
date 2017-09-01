@@ -34,7 +34,7 @@
 
                     <div class="description-box">
                         <h4>{{ $Portfolio->title }}</h4>
-                        <p>{{ $Portfolio->description }}</p>
+                        <p>{!! $Portfolio->description !!}</p>
                     </div>
 
                     <div class="link-box">
