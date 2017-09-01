@@ -9,6 +9,7 @@ use App\WebsiteMenu;
 use App\WebsitePage;
 use App\WebsitePortfolio;
 use App\WebsiteService;
+use App\WebsiteSocial;
 use App\WorkGroup;
 use App\WorkGroupUser;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ class WebsiteRouteController extends Controller
         $Services   = WebsiteService::where('website_id', $this->Website->id)->where('status', 1)->get();
         $Portfolios = WebsitePortfolio::where('website_id', $this->Website->id)->where('status', 1)->get();
         $Contact    = WebsiteContact::where('website_id', $this->Website->id)->where('status', 1)->first();
+        $Social     = WebsiteSocial::where('website_id', $this->Website->id)->first();
 
         unset( $About->title, $Page->title );
 
@@ -68,10 +70,10 @@ class WebsiteRouteController extends Controller
 
             try {
 
-                $Build .= view("website.templates.{$this->Website->template}.{$Json->require}", compact('Website','Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Json'))->render();
+                $Build .= view("website.templates.{$this->Website->template}.{$Json->require}", compact('Website','Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Social', 'Json'))->render();
             } catch (\Exception $e) {
 
-                $Build .= "Require {$Json->require} 404 <br>";
+                $Build .= "Error {$Json->require} msg: {$e->getMessage()} <br>";
             }
         }
 

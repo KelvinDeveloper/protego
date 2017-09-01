@@ -92,6 +92,9 @@ class Install extends Command
         'WebsitePage'   =>  [
             'group' =>  5
         ],
+        'WebsiteSocial'   =>  [
+            'group' =>  5
+        ],
     ];
 
     /**

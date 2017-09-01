@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkGroup extends Model
 {
-    protected $fillable = ['name', 'user_id'];
-
+    protected $fillable = ['facebook', 'twitter', 'google_plus', 'linkedin', 'instagram', 'dribbble', 'skype'];
     public $hidden = ['id', 'created_at', 'updated_at'];
 
     public $title = 'Grupo de Trabalho';

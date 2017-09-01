@@ -34,9 +34,22 @@ class Website extends Model
         ],
         'template'    =>  [
             'type'  =>  'select',
-            'options'   =>  [
-                'creative'  =>  'Creative'
-            ]
+            'options'   =>  []
         ],
     ];
+
+    public function __construct ()
+    {
+
+        $templates = scandir( resource_path('views/website/templates') );
+
+        foreach ( $templates as $template ) {
+
+            $info = pathinfo( resource_path('views/website/templates/' . $template) );
+
+            if (! is_dir( "{$info['dirname']}/$template" ) || in_array($template, ['.', '..']) ) continue;
+
+            $this->field['template']['options'][ $template ] = ucfirst( str_replace('_', ' ', $template) );
+        }
+    }
 }
