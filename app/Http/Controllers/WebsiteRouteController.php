@@ -45,7 +45,7 @@ class WebsiteRouteController extends Controller
         $Build = '';
 
         $Website    = $this->Website;
-        $Menu       = WebsiteMenu::where('website_id', $this->Website->id)->where('status', 1)->get();
+        $Menu       = WebsiteMenu::where('website_id', $this->Website->id)->where('status', 1)->orderBy('position', 'ASC')->get();
         $About      = WebsiteAbout::where('website_id', $this->Website->id)->where('status', 1)->first();
         $Services   = WebsiteService::where('website_id', $this->Website->id)->where('status', 1)->get();
         $Portfolios = WebsitePortfolio::where('website_id', $this->Website->id)->where('status', 1)->get();
