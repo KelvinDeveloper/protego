@@ -4,7 +4,7 @@
 
         <div class="two columns header-col">
 
-            <h1><span>Get In Touch.</span></h1>
+            <h1><span>Contato</span></h1>
 
         </div>
 
