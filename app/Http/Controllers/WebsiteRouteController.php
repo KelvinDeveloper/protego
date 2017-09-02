@@ -79,4 +79,29 @@ class WebsiteRouteController extends Controller
 
         return view("website.templates.{$this->Website->template}.index", compact('Website', 'Build'))->render();
     }
+
+    public function sendMail (Request $request)
+    {
+
+        $Validation = $this->validate($request, [
+            'contactName'      => 'required|min:3',
+            'contactEmail'     => 'required|email',
+            'contactMessage'   => 'required|min:5', ]);
+
+        $Details = (object) $request->all();
+
+        $Mail = new MailController;
+        $Send = $Mail->Send(
+            [   'Title' => $request->contactSubject ?: 'Sem título',
+                'To'    => env('SMTP_USERNAME', 'kelvin.developer@icloud.com'),
+                'name'  => $request->contactName,
+                'request'   =>  $Details,
+                'Website'   =>  $this->Website], 'website');
+
+        if ($Send) {
+            return response()->json(['status' => true]);
+        }
+
+        return response()->json(['status' => false]);
+    }
 }

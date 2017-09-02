@@ -139,25 +139,45 @@
 
    $('form#contactForm button.submit').click(function() {
 
-      $('#image-loader').fadeIn();
-
+      var _token = $('#contactForm [name="_token"]').val();
       var contactName = $('#contactForm #contactName').val();
       var contactEmail = $('#contactForm #contactEmail').val();
       var contactSubject = $('#contactForm #contactSubject').val();
       var contactMessage = $('#contactForm #contactMessage').val();
 
-      var data = 'contactName=' + contactName + '&contactEmail=' + contactEmail +
+      if ( contactName == '' || contactEmail == '' ||  contactMessage == '' ) {
+
+          alert('Preencha todos os dados para continuar')
+          return false;
+      }
+
+      else if ( contactName.length < 3 ) {
+
+          alert('O nome deve ter pelo menos 3 caracteres');
+          return false;
+      }
+
+      else if ( contactMessage < 5 ) {
+
+          alert('A mensagem deve ter pelo menos 5 caracteres');
+          return false;
+      }
+
+       $('#image-loader').fadeIn();
+
+       var data = '_token=' + _token + '&contactName=' + contactName + '&contactEmail=' + contactEmail +
                '&contactSubject=' + contactSubject + '&contactMessage=' + contactMessage;
 
       $.ajax({
 
 	      type: "POST",
-	      url: "inc/sendEmail.php",
+	      url: "/website/mail/send",
 	      data: data,
-	      success: function(msg) {
+          dataType: 'json',
+	      success: function(response) {
 
             // Message was sent
-            if (msg == 'OK') {
+            if (response.status == true) {
                $('#image-loader').fadeOut();
                $('#message-warning').hide();
                $('#contactForm').fadeOut();
@@ -170,7 +190,14 @@
 	            $('#message-warning').fadeIn();
             }
 
-	      }
+	      },
+
+          error: function () {
+
+              $('#image-loader').fadeOut();
+              $('#message-warning').html(msg);
+              $('#message-warning').fadeIn();
+          }
 
       });
       return false;
