@@ -32,39 +32,36 @@ class MailController extends Controller
          */
         if (!filter_var($values['To'], FILTER_VALIDATE_EMAIL) === false) {
 
-            if (Auth::user()) {
+            // Envia Email via SMTP
 
-                // Envia Email via SMTP
+            $mail = new \PHPMailer();                              // Instanciando o PHPMailer
+            $mail->isSMTP();                                       // Ativar SMTP
+            $mail->SMTPDebug  = env('APP_ENV') == 'local' ? 3 : 0; // Debugar: 1 = erros e mensagens, 2 = mensagens apenas
+            $mail->SMTPAuth   = env('SMTP_AUTH', true);            // Autenticação ativada
+            $mail->SMTPSecure = env('SMTP_ENCRYPT', 'SSL');        // SSL REQUERIDO pelo GMail
+            $mail->Host       = env('SMTP_HOST', 'smtp.mail.me.com');// SMTP utilizado
+            $mail->Port       = env('SMTP_PORT', 587);             // A porta 587 deverá estar aberta em seu servidor
+            $mail->Username   = env('SMTP_USERNAME', 'kelvin.developer@icloud.com');
+            $mail->Password   = env('SMTP_PASSWORD', 'mphp-yith-rrvo-vlyt');
+            $mail->CharSet    = Config::get('database.connections.mysql.charset');
 
-                $mail = new \PHPMailer();                              // Instanciando o PHPMailer
-                $mail->isSMTP();                                       // Ativar SMTP
-                $mail->SMTPDebug  = env('APP_ENV') == 'local' ? 3 : 0; // Debugar: 1 = erros e mensagens, 2 = mensagens apenas
-                $mail->SMTPAuth   = env('SMTP_AUTH', true);            // Autenticação ativada
-                $mail->SMTPSecure = env('SMTP_ENCRYPT', 'TSL');        // SSL REQUERIDO pelo GMail
-                $mail->Host       = env('SMTP_HOST', 'smtp-relay.gmail.com');// SMTP utilizado
-                $mail->Port       = env('SMTP_PORT', 587);             // A porta 587 deverá estar aberta em seu servidor
-                $mail->Username   = env('SMTP_USERNAME', 'protego@kelvinsouza.com');
-                $mail->Password   = env('SMTP_PASSWORD', 'Q4w3e2r1');
-                $mail->CharSet    = Config::get('database.connections.mysql.charset');
+            $mail->Debugoutput = 'error_log';
 
-                $mail->Debugoutput = 'error_log';
+            $mail->IsHTML(true);
+            $mail->SetFrom( env('SMTP_USERNAME', 'kelvin.developer@icloud.com'), $values['name']);
+            $mail->Subject = $values['Title'];
+            $mail->Body    = view('mail.' . $view, $values);
+            $mail->AddAddress($values['To'], $values['name']);
 
-                $mail->IsHTML(true);
-                $mail->SetFrom( env('SMTP_USERNAME', 'protego@kelvinsouza.com'), Auth::user()->name);
-                $mail->Subject = $values['Title'];
-                $mail->Body    = view('mail.' . $view, $values);
-                $mail->AddAddress($values['To'], Auth::user()->name);
-
-                if ($attachments && !empty($attachments)) {
-                    foreach ($attachments as $file) {
-                        $mail->addAttachment($file);
-                    }
+            if ($attachments && !empty($attachments)) {
+                foreach ($attachments as $file) {
+                    $mail->addAttachment($file);
                 }
-
-                $sent = $mail->send();
-                dd($sent, $mail->ErrorInfo);
-                $mail->smtpClose();
             }
+
+            $sent = $mail->send();
+
+            $mail->smtpClose();
 
             return $sent;
         }
