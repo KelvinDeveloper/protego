@@ -30,7 +30,14 @@ class WebsiteRouteController extends Controller
         Session::put('work_group', WorkGroup::find($WorkGroup->work_group_id) );
     }
 
-    public function getPage ($Url) {
+    public function getPage ($Url)
+    {
+        $Info = (object) pathinfo($Url);
+
+        if ( strstr($Info->filename, 'google') && $Info->extension == 'html' ) {
+
+            return $this->openGoogleSearchConsole( $Info->basename );
+        }
 
         $Page = WebsitePage::where('url', $Url)->where('website_id', $this->Website->id);
 
@@ -78,5 +85,16 @@ class WebsiteRouteController extends Controller
         }
 
         return view("website.templates.{$this->Website->template}.index", compact('Website', 'Build'))->render();
+    }
+
+    private function openGoogleSearchConsole ($file)
+    {
+        if ( file_exists( public_path( $this->Website->domain ) . '/' . $file ) ) {
+
+            echo file_get_contents(public_path( $this->Website->domain ) . '/' . $file );
+            exit;
+        }
+
+        abort(404);
     }
 }
