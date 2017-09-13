@@ -13,7 +13,7 @@
             <ul class="nav navbar-nav navbar-right">
                 @foreach($Menu as $Item)
                     <li>
-                        <a class="page-scroll" href="{{ $Item->href }}" target="{{ $Item->target }}">{{ $Item->name }}</a>
+                        <a class="page-scroll" href="{{ $Item->href }}" target="{{ $Item->target }}" name="{{ $Item->name }}">{{ $Item->name }}</a>
                     </li>
                 @endforeach
             </ul>
