@@ -41,6 +41,10 @@ class WebsitePage extends Model
         ]
     ];
 
+    public $grid = [
+        'hidden'    =>  ['content']
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

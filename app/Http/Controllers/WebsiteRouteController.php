@@ -9,6 +9,7 @@ use App\WebsiteMenu;
 use App\WebsitePage;
 use App\WebsitePortfolio;
 use App\WebsiteService;
+use App\WebsiteSlide;
 use App\WebsiteSocial;
 use App\WorkGroup;
 use App\WorkGroupUser;
@@ -22,12 +23,11 @@ class WebsiteRouteController extends Controller
     public function __construct(Request $request)
     {
         $account = $request->route()->parameter('account');
-        $this->Website = Website::where('domain', $account)->orWhere('subdomain', $account)->first();
+        $this->Website = Website::where('domain', $account)->orWhere('subdomain', $account)->first(['id', 'status', 'title', 'description', 'domain', 'subdomain', 'ga', 'template', 'work_group_id', 'created_at', 'updated_at']);
 
         unset( $this->Website->title );
 
-        $WorkGroup = WorkGroupUser::where('id', $this->Website->id )->first();
-        Session::put('work_group', WorkGroup::find($WorkGroup->work_group_id) );
+        Session::put('work_group', WorkGroup::find($this->Website->work_group_id) );
     }
 
     public function getPage ($Url)
@@ -59,6 +59,18 @@ class WebsiteRouteController extends Controller
         $Contact    = WebsiteContact::where('website_id', $this->Website->id)->where('status', 1)->first();
         $Social     = WebsiteSocial::where('website_id', $this->Website->id)->first();
 
+        // Get multiple images
+        $SlidersObj = WebsiteSlide::where('website_id', $this->Website->id)->first();
+        $Sliders = scandir(public_path('img' . $SlidersObj->pics));
+
+        foreach ($Sliders as $key => $Image) {
+            if (is_dir('img' . $SlidersObj->pics . $Image)) {
+                unset($Sliders[$key]);
+            } else {
+                $Sliders[$key] = 'img' . $SlidersObj->pics . $Image;
+            }
+        }
+
         unset( $About->title, $Page->title );
 
         $Contents = preg_split('/\n|\r\n?/', $Page->content);
@@ -77,14 +89,14 @@ class WebsiteRouteController extends Controller
 
             try {
 
-                $Build .= view("website.templates.{$this->Website->template}.{$Json->require}", compact('Website','Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Social', 'Json'))->render();
+                $Build .= view("website.templates.{$this->Website->template}.{$Json->require}", compact('Website','Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Social', 'Json', 'Sliders'))->render();
             } catch (\Exception $e) {
 
                 $Build .= "Error {$Json->require} msg: {$e->getMessage()} <br>";
             }
         }
 
-        return view("website.templates.{$this->Website->template}.index", compact('Website', 'Build'))->render();
+        return view("website.templates.{$this->Website->template}.index", compact('Website', 'Build', 'Menu', 'About', 'Services', 'Portfolios', 'Contact', 'Social', 'Json', 'Sliders'))->render();
     }
 
     public function sendMail (Request $request)
