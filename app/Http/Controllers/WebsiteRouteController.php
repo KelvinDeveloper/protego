@@ -61,15 +61,19 @@ class WebsiteRouteController extends Controller
 
         // Get multiple images
         $SlidersObj = WebsiteSlide::where('website_id', $this->Website->id)->first();
-        $Sliders = scandir(public_path('img' . $SlidersObj->pics));
+        $Sliders = null;
+        if ($SlidersObj) {
+            $Sliders = scandir(public_path('img' . $SlidersObj->pics));
 
-        foreach ($Sliders as $key => $Image) {
-            if (is_dir('img' . $SlidersObj->pics . $Image)) {
-                unset($Sliders[$key]);
-            } else {
-                $Sliders[$key] = 'img' . $SlidersObj->pics . $Image;
+            foreach ($Sliders as $key => $Image) {
+                if (is_dir('img' . $SlidersObj->pics . $Image)) {
+                    unset($Sliders[$key]);
+                } else {
+                    $Sliders[$key] = 'img' . $SlidersObj->pics . $Image;
+                }
             }
         }
+
 
         unset( $About->title, $Page->title );
 
